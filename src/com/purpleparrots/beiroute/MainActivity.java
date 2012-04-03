@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,11 +20,12 @@ public class MainActivity extends Activity implements OnClickListener {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        //routeHash = Control.getRoutes();
-        //alarmHash = Control.getHash();
-        routeHash = new Hashtable<String,Integer>();
+        routeHash = Control.getRoutes();
+        alarmHash = Control.getAlarms();
+        /*routeHash = new Hashtable<String,Integer>();
         routeHash.put("Morning commute1", 12345);
         routeHash.put("Morning commute2", 12345);
         routeHash.put("Morning commute3", 12345);
@@ -40,7 +42,7 @@ public class MainActivity extends Activity implements OnClickListener {
         //alarmHash.put("Wake up alarm4", 54321);
         //alarmHash.put("Wake up alarm5", 54321);
         //alarmHash.put("Wake up alarm6", 54321);
-        //alarmHash.put("Wake up alarm7", 54321);
+        //alarmHash.put("Wake up alarm7", 54321);*/
         fillRoutes();
         makeMiddleText();
         fillAlarms();
@@ -102,7 +104,8 @@ public class MainActivity extends Activity implements OnClickListener {
     
     public void newRouteClick(View v) {
     	Intent i = new Intent(this, NewRouteActivity.class);
-    	//Control.createRoute();
+    	Control.createRoute();
+    	Log.d("jb", Control.getRouteName());
     	startActivity(i);
     }
     

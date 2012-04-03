@@ -21,14 +21,14 @@ public class RouteDetailActivity extends Activity {
         end = (TextView)findViewById(R.id.route_detail_end);
         duration = (TextView)findViewById(R.id.route_detail_duration);
         
-        //name.setText(Control.getRouteName());
-        name.setText("Morning Commute");
-        //start.setText(Control.getRouteStartLoc());
-        start.setText("Baker");
-        //end.setText(Control.getRouteEndLoc());
-        end.setText("Stata");
-        //String stringDuration = longToString(Control.getRouteDuration());
-        String stringDuration = longToString(750000);
+        name.setText(Control.getRouteName());
+        //name.setText("Morning Commute");
+        start.setText(Control.getRouteStartLoc());
+        //start.setText("Baker");
+        end.setText(Control.getRouteEndLoc());
+        //end.setText("Stata");
+        String stringDuration = longToString(Control.getRouteDuration());
+        //String stringDuration = longToString(750000);
         duration.setText(stringDuration);
     }
     

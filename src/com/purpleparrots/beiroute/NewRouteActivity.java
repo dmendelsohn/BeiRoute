@@ -34,16 +34,16 @@ public class NewRouteActivity extends Activity {
     	if (state == 0) {
         	recordButton.setText("Stop Recording");
     		state++;
-    		//Control.startRecording();
+    		Control.startRecording();
     	} else if (state == 1) {
         	recordButton.setText("Save Route");
     		state++;
-    		//Control.stopRecording();
+    		Control.stopRecording();
     	} else {
     		String name = nameField.getText().toString();
     		String startloc = startField.getText().toString();
     		String endloc = endField.getText().toString();
-    		//Control.saveRoute(name, startloc, endloc);
+    		Control.saveRoute(name, startloc, endloc);
     		Log.d("Dan's Log", "Saving with (name, startloc, endloc) = ( "+name+", "+startloc+", "+endloc+")");
     		Intent i = new Intent(this, RouteDetailActivity.class);
     		startActivity(i);

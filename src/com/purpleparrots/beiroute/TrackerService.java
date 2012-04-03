@@ -18,7 +18,9 @@ public class TrackerService extends Service implements LocationListener {
 	private Route workingRoute;
 	
 	public void onCreate() {
+		Log.d("jb", "Creating TrackerService...");
 		lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+		Log.d("jb", "Got location service");
 		//String provider = lm.getBestProvider(new Criteria(), true);
     }
 
@@ -28,7 +30,9 @@ public class TrackerService extends Service implements LocationListener {
 	}
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.d("jb", "Starting...");
 		requestLocationUpdates();
+		Log.d("jb", "Submitted request for location lookups");
 		return START_STICKY;
 	}
 

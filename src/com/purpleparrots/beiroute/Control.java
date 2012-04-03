@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 
 public class Control {
 	
@@ -60,8 +61,11 @@ public class Control {
 	
 	public static int createRoute() {
 		maxRouteId++;
+		Log.d("jb", "maxRouteId is currently = " + maxRouteId);
 		routeList.put(maxRouteId, new Route());
+		Log.d("jb", routeList.toString());
 		setWorkingRoute(maxRouteId);
+		Log.d("jb", "workingRouteId = " + workingRouteId);
 		return workingRouteId;
 	}
 	/*
@@ -76,12 +80,17 @@ public class Control {
 	
 	public static void startRecording() {
 		//ws.acquire();
+		Log.d("jb", "1");
 		ts.setWorkingRoute(workingRoute);
-		ts.startService(new Intent()); // TODO: information in intent
+		Log.d("jb", "2");
+		Log.d("jb", ts.TAG);
+		//ts.startService(new Intent()); // TODO: information in intent
+		workingRoute.setStartTime();
+		Log.d("jb", "3");
 	}
 	
 	public static long stopRecording() {
-		ts.stopService(null);
+		//ts.stopService(null);
 		workingRoute.setDuration();
 		//ws.release();
 		return workingRoute.getDuration();
@@ -137,7 +146,7 @@ public class Control {
 	}
 	
 	public static int saveAlarm(String name, GregorianCalendar time) {
-		maxAlarmId++;
+		maxAlarmId--;
 		alarmList.put(maxAlarmId, new Alarm(name, workingRoute, time, as));
 		setWorkingAlarm(maxAlarmId);
 		return workingAlarmId;

@@ -15,6 +15,7 @@ public class Route {
 	private LinkedList<Location> nodes;
 	
 	public Route() {
+		name = "New Route";
 		setStartTime();
 	}
 	
