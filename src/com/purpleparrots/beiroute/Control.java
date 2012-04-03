@@ -107,6 +107,11 @@ public class Control {
 	}
 	
 	public static void deleteRoute() {
+		for (int key : alarmList.keySet()) {
+			if (alarmList.get(key).getRoute().equals(workingRoute)) {
+				alarmList.remove(key);
+			}
+		}
 		routeList.remove(workingRouteId);
 	}
 
@@ -184,6 +189,7 @@ public class Control {
 		return workingAlarm.getTime().get(GregorianCalendar.YEAR);
 	}
 	public static int getAlarmMonth() {
+		Log.d("jb", "" + workingAlarm.getTime().get(GregorianCalendar.MONTH));
 		return workingAlarm.getTime().get(GregorianCalendar.MONTH);
 	}
 	public static int getAlarmDay() {
