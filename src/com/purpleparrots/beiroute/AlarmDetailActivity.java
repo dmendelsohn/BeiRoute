@@ -42,8 +42,14 @@ public class AlarmDetailActivity extends Activity {
     
     public void onDelete(View alarm) {
     	Log.d("Dan's Log", "Deleted the alarm");
-    	//Control.deleteAlarm();
+    	Control.deleteAlarm();
     	Intent i = new Intent(this, MainActivity.class);
-    	startActivity(i);    	
+    	startActivity(i);    
+    }
+    
+    public void homeClick(View v) {
+    	Log.d("Dan's Log", "Going home from Alarm Detail");
+    	Intent i = new Intent(this, MainActivity.class);
+    	startActivity(i);
     }
 }
