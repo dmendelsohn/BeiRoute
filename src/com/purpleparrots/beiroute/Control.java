@@ -11,21 +11,21 @@ import android.os.PowerManager;
 
 public class Control {
 	
-	private TrackerService ts;
-	private AlarmService as;
-	private WakeLockService ws;
+	private static TrackerService ts;
+	private static AlarmService as;
+	private static WakeLockService ws;
 	
-	private int maxRouteId = -1;
-	private int workingRouteId = -1;
-	private Hashtable<Integer, Route> routeList;
-	private Route workingRoute;
+	private static int maxRouteId = -1;
+	private static int workingRouteId = -1;
+	private static Hashtable<Integer, Route> routeList;
+	private static Route workingRoute;
 	
-	private int maxAlarmId = -1;
-	private int workingAlarmId = -1;
-	private Hashtable<Integer, Alarm> alarmList;
-	private Alarm workingAlarm;
+	private static int maxAlarmId = -1;
+	private static int workingAlarmId = -1;
+	private static Hashtable<Integer, Alarm> alarmList;
+	private static Alarm workingAlarm;
 	
-	private class WakeLockService extends Service {
+	private static class WakeLockService extends Service {
 
 		private PowerManager pm;
 		private PowerManager.WakeLock wakelock;
@@ -50,7 +50,7 @@ public class Control {
 		
 	}
 	
-	public Control() {
+	public static void initialize() {
 		ts = new TrackerService();
 		ws = new WakeLockService();
 		as = new AlarmService();
@@ -58,7 +58,7 @@ public class Control {
 		alarmList = new Hashtable<Integer, Alarm>();
 	}
 	
-	public int createRoute() {
+	public static int createRoute() {
 		maxRouteId++;
 		routeList.put(maxRouteId, new Route());
 		setWorkingRoute(maxRouteId);
@@ -69,47 +69,47 @@ public class Control {
 		return workingRouteId;
 	}
 	*/
-	public void setWorkingRoute(int id) {
+	public static void setWorkingRoute(int id) {
 		workingRouteId = id;
 		workingRoute = routeList.get(workingRouteId);
 	}
 	
-	public void startRecording() {
+	public static void startRecording() {
 		ws.acquire();
 		ts.setWorkingRoute(workingRoute);
 		ts.startService(new Intent()); // TODO: information in intent
 	}
 	
-	public long stopRecording() {
+	public static long stopRecording() {
 		ts.stopService(null);
 		workingRoute.setDuration();
 		ws.release();
 		return workingRoute.getDuration();
 	}
 	
-	public void saveRoute(String name, String startLoc, String endLoc) {
+	public static void saveRoute(String name, String startLoc, String endLoc) {
 		workingRoute.setName(name);
 		workingRoute.setStartLoc(startLoc);
 		workingRoute.setEndLoc(endLoc);
 	}
 	
-	public void deleteRoute() {
+	public static void deleteRoute() {
 		routeList.remove(workingRouteId);
 	}
 
-	String getRouteName() {
+	public static String getRouteName() {
 		return workingRoute.getName();
 	}
 	
-	String getRouteStartLoc() {
+	public static String getRouteStartLoc() {
 		return workingRoute.getStartLoc();
 	}
 	
-	String getRouteEndLoc() {
+	public static String getRouteEndLoc() {
 		return workingRoute.getEndLoc();
 	}
 	
-	Long getRouteDuration() {
+	public static Long getRouteDuration() {
 		return workingRoute.getDuration();
 	}
 
@@ -123,12 +123,12 @@ public class Control {
 	}
 	*/
 	
-	public void setWorkingAlarm(int id) {
+	public static void setWorkingAlarm(int id) {
 		workingAlarmId = id;
 		workingAlarm = alarmList.get(workingAlarmId);
 	}
 	
-	public Hashtable<String, Integer> getAlarms() {
+	public static Hashtable<String, Integer> getAlarms() {
 		Hashtable<String, Integer> out = new Hashtable<String, Integer>();
 		for (int key : alarmList.keySet()) {
 			out.put(alarmList.get(key).getName(), key);
@@ -136,30 +136,30 @@ public class Control {
 		return out;
 	}
 	
-	public int saveAlarm(String name, GregorianCalendar time) {
+	public static int saveAlarm(String name, GregorianCalendar time) {
 		maxAlarmId++;
 		alarmList.put(maxAlarmId, new Alarm(name, workingRoute, time, as));
 		setWorkingAlarm(maxAlarmId);
 		return workingAlarmId;
 	}
 	
-	public void saveAlarm(String name, int year, int month, int day, int hour, int minute) {
+	public static void saveAlarm(String name, int year, int month, int day, int hour, int minute) {
 		saveAlarm(name, new GregorianCalendar(year, month, day, hour, minute));
 	}
 	
-	public void deleteAlarm() {
+	public static void deleteAlarm() {
 		alarmList.remove(workingAlarmId);
 	}
 	
-	public String getAlarmName() {
+	public static String getAlarmName() {
 		return workingAlarm.getName();
 	}
 	
-	public String getAlarmRouteName() {
+	public static String getAlarmRouteName() {
 		return workingAlarm.getRoute().getName();
 	}
 	
-	public GregorianCalendar getAlarmGregorian() {
+	public static GregorianCalendar getAlarmGregorian() {
 		return workingAlarm.getTime();
 	}
 	
