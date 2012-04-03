@@ -41,7 +41,7 @@ public class AlarmService extends Service {
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);		
 		Intent intent = new Intent(this, Notifier.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-        am.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+        //am.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
 	}
 
 	@Override
