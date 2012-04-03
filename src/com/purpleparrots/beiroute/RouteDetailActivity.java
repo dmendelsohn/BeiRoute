@@ -40,7 +40,13 @@ public class RouteDetailActivity extends Activity {
     
     public void onDelete(View route) {
     	Log.d("Dan's Log", "Deleted the route");
-    	//Control.deleteRoute();
+    	Control.deleteRoute();
+    	Intent i = new Intent(this, MainActivity.class);
+    	startActivity(i);
+    }
+    
+    public void homeClick(View v) {
+    	Log.d("Dan's Log", "Clicked home from route detail");
     	Intent i = new Intent(this, MainActivity.class);
     	startActivity(i);
     }

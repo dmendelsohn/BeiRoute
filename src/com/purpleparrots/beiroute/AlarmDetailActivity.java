@@ -24,20 +24,20 @@ public class AlarmDetailActivity extends Activity {
         day = (TextView)findViewById(R.id.alarm_detail_day_field);
         year = (TextView)findViewById(R.id.alarm_detail_year_field);
         
-        //name.setText(Control.getAlarmName());
-        name.setText("*wake up*");
-        //route.setText(Control.getAlarmRouteName());
-        route.setText("AM Commute");
-        //hour.setText((String)(Control.getAlarmHour()));
-        hour.setText("9");
-        //minute.setText((String)(Control.getAlarmMinute()));
-        minute.setText("30");
-        //month.setText((String)(Control.getAlarmMonth() + 1));
-        month.setText("3");
-        //day.setText((String)(Control.getAlarmDay()));
-        day.setText("28");
-        //year.setText((String)(Control.getAlarmYear() + 1900));
-        year.setText("2012"); 
+        name.setText(Control.getAlarmName());
+        //name.setText("*wake up*");
+        route.setText(Control.getAlarmRouteName());
+        //route.setText("AM Commute");
+        hour.setText((String)(Control.getAlarmHour()));
+        //hour.setText("9");
+        minute.setText((String)(Control.getAlarmMinute()));
+        //minute.setText("30");
+        month.setText((String)(Control.getAlarmMonth() + 1));
+        //month.setText("3");
+        day.setText((String)(Control.getAlarmDay()));
+        //day.setText("28");
+        year.setText((String)(Control.getAlarmYear() + 1900));
+        //year.setText("2012"); 
     }
     
     public void onDelete(View alarm) {

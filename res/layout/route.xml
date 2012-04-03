@@ -107,6 +107,14 @@
             android:onClick="onDelete"
             android:text="@string/delete_this_route" />
 
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:onClick="homeClick"
+            android:text="@string/home" />
+
     </LinearLayout>
 
 </LinearLayout>

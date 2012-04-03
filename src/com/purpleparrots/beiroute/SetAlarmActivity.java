@@ -36,7 +36,7 @@ public class SetAlarmActivity extends Activity {
         month -= 1;
         year -= 1900;
 
-    	//Control.saveAlarm(name, year, month, day, hour, minute);
+    	Control.saveAlarm(name, year, month, day, hour, minute);
         Log.d("Dan's Log", "Saving alarm with data: " + name + ", " + hour + ", "+ minute + ", "
         		+ month + ", " + day + ", " + year);
         Intent i = new Intent(this, MainActivity.class);

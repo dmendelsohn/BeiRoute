@@ -12,6 +12,8 @@ import android.util.Log;
 
 public class Control {
 	
+	private static boolean hasBeenInitialized = false;
+	
 	private static TrackerService ts;
 	private static AlarmService as;
 	private static WakeLockService ws;
@@ -52,11 +54,13 @@ public class Control {
 	}
 	
 	public static void initialize() {
+		if (hasBeenInitialized) return;
 		ts = new TrackerService();
 		ws = new WakeLockService();
 		as = new AlarmService();
 		routeList = new Hashtable<Integer, Route>();
 		alarmList = new Hashtable<Integer, Alarm>();
+		hasBeenInitialized = true;
 	}
 	
 	public static int createRoute() {

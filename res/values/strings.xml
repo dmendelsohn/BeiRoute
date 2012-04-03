@@ -30,5 +30,6 @@
     <string name="delete_alarm">Delete Alarm</string>
     <string name="alarm_name">Alarm Name</string>
     <string name="delete_this_route">Delete This Route</string>
+    <string name="home">Home</string>
 
 </resources>

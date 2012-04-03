@@ -20,6 +20,7 @@ public class MainActivity extends Activity implements OnClickListener {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Log.d("Dan's Log", "Created Main Activity");
     	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -51,6 +52,12 @@ public class MainActivity extends Activity implements OnClickListener {
     public void fillRoutes() {
     	LinearLayout routeLayout = (LinearLayout)findViewById(R.id.home_parent);
     	if (routeHash.size() == 0) {
+    		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+  				  LinearLayout.LayoutParams.MATCH_PARENT,
+  				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    		TextView tv = new TextView(this);
+    		tv.setText("You have no saved routes");
+    		routeLayout.addView(tv, p);
     	}
     	else {
     		Enumeration<String> keys = routeHash.keys();
@@ -73,6 +80,12 @@ public class MainActivity extends Activity implements OnClickListener {
     public void fillAlarms() {
     	LinearLayout alarmLayout = (LinearLayout)findViewById(R.id.home_parent);
     	if (alarmHash.size() == 0) {
+    		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+    				  LinearLayout.LayoutParams.MATCH_PARENT,
+    				  LinearLayout.LayoutParams.WRAP_CONTENT );
+      		TextView tv = new TextView(this);
+      		tv.setText("You have no saved alarms");
+      		alarmLayout.addView(tv, p);
     	}
     	else {
     		Enumeration<String> keys = alarmHash.keys();
@@ -92,12 +105,12 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
     	if (routeHash.containsKey( ((Button) v).getText().toString() ) ) {
     		Intent i = new Intent(this, RouteDetailActivity.class);
-    		//Control.setAlarm(routeHash.get( ((Button) v).getText().toString()));
+    		Control.setWorkingRoute(routeHash.get( ((Button) v).getText().toString()));
     		startActivity(i);
     	}
     	else if (alarmHash.containsKey( ((Button) v).getText().toString() ) ) {
     		Intent i = new Intent(this, AlarmDetailActivity.class);
-    		//Control.setAlarm(alarmHash.get( ((Button) v).getText().toString()));
+    		Control.setWorkingAlarm(alarmHash.get( ((Button) v).getText().toString()));
     		startActivity(i);
     	}
     }
@@ -116,6 +129,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
     	TextView tv = new TextView(this);
     	tv.setText("Saved alarms");
+    	tv.setTextSize(20);
     	layout.addView(tv, p);
     }
     
