@@ -75,7 +75,7 @@ public class Control {
 	}
 	
 	public static void startRecording() {
-		ws.acquire();
+		//ws.acquire();
 		ts.setWorkingRoute(workingRoute);
 		ts.startService(new Intent()); // TODO: information in intent
 	}
@@ -83,7 +83,7 @@ public class Control {
 	public static long stopRecording() {
 		ts.stopService(null);
 		workingRoute.setDuration();
-		ws.release();
+		//ws.release();
 		return workingRoute.getDuration();
 	}
 	
@@ -109,7 +109,7 @@ public class Control {
 		return workingRoute.getEndLoc();
 	}
 	
-	public static Long getRouteDuration() {
+	public static long getRouteDuration() {
 		return workingRoute.getDuration();
 	}
 
