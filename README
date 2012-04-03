@@ -3,3 +3,20 @@ Hi
 Test 3
 
 Eclipse works!
+
+Control.java functions:
+
+int createRoute();
+void setWorkingRoute();
+void startRecording();
+long stopRecording(); // returns duration of route
+void saveRoute(String name, String startLoc, String endLoc);
+void deleteRoute();
+void setAlarm(Date date);
+
+String getRouteName();
+String getRouteStartLoc();
+String getRouteEndLoc();
+
+ArrayList getRouteList();
+Route getRoute();
