@@ -180,6 +180,22 @@ public class Control {
 		return workingAlarm.getRoute().getName();
 	}
 	
+	public static int getAlarmYear() {
+		return workingAlarm.getTime().get(GregorianCalendar.YEAR);
+	}
+	public static int getAlarmMonth() {
+		return workingAlarm.getTime().get(GregorianCalendar.MONTH);
+	}
+	public static int getAlarmDay() {
+		return workingAlarm.getTime().get(GregorianCalendar.DATE);
+	}
+	public static int getAlarmHour() {
+		return workingAlarm.getTime().get(GregorianCalendar.HOUR);
+	}
+	public static int getAlarmMinute() {
+		return workingAlarm.getTime().get(GregorianCalendar.MINUTE);
+	}
+	
 	public static GregorianCalendar getAlarmGregorian() {
 		return workingAlarm.getTime();
 	}
