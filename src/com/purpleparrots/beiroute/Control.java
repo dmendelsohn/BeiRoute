@@ -12,6 +12,8 @@ import android.os.PowerManager;
 public class Control {
 	
 	private TrackerService ts;
+	private AlarmService as;
+	private WakeLockService ws;
 	
 	private int maxRouteId = -1;
 	private int workingRouteId = -1;
@@ -22,8 +24,6 @@ public class Control {
 	private int workingAlarmId = -1;
 	private Hashtable<Integer, Alarm> alarmList;
 	private Alarm workingAlarm;
-	
-	private WakeLockService wl;
 	
 	private class WakeLockService extends Service {
 
@@ -52,7 +52,8 @@ public class Control {
 	
 	public Control() {
 		ts = new TrackerService();
-		wl = new WakeLockService();
+		ws = new WakeLockService();
+		as = new AlarmService();
 		routeList = new Hashtable<Integer, Route>();
 		alarmList = new Hashtable<Integer, Alarm>();
 	}
@@ -74,7 +75,7 @@ public class Control {
 	}
 	
 	public void startRecording() {
-		wl.acquire();
+		ws.acquire();
 		ts.setWorkingRoute(workingRoute);
 		ts.startService(new Intent()); // TODO: information in intent
 	}
@@ -82,7 +83,7 @@ public class Control {
 	public long stopRecording() {
 		ts.stopService(null);
 		workingRoute.setDuration();
-		wl.release();
+		ws.release();
 		return workingRoute.getDuration();
 	}
 	
@@ -106,6 +107,10 @@ public class Control {
 	
 	String getRouteEndLoc() {
 		return workingRoute.getEndLoc();
+	}
+	
+	Long getRouteDuration() {
+		return workingRoute.getDuration();
 	}
 
 	/*
@@ -133,7 +138,7 @@ public class Control {
 	
 	public int saveAlarm(String name, GregorianCalendar time) {
 		maxAlarmId++;
-		alarmList.put(maxAlarmId, new Alarm(name, time));
+		alarmList.put(maxAlarmId, new Alarm(name, workingRoute, time, as));
 		setWorkingAlarm(maxAlarmId);
 		return workingAlarmId;
 	}
@@ -142,8 +147,16 @@ public class Control {
 		saveAlarm(name, new GregorianCalendar(year, month, day, hour, minute));
 	}
 	
+	public void deleteAlarm() {
+		alarmList.remove(workingAlarmId);
+	}
+	
 	public String getAlarmName() {
 		return workingAlarm.getName();
+	}
+	
+	public String getAlarmRouteName() {
+		return workingAlarm.getRoute().getName();
 	}
 	
 	public GregorianCalendar getAlarmGregorian() {
