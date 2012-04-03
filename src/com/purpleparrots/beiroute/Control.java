@@ -121,6 +121,14 @@ public class Control {
 	public static long getRouteDuration() {
 		return workingRoute.getDuration();
 	}
+	
+	public static Hashtable<String, Integer> getRoutes() {
+		Hashtable<String, Integer> out = new Hashtable<String, Integer>();
+		for (int key : routeList.keySet()) {
+			out.put(routeList.get(key).getName(), key);
+		}
+		return out;
+	}
 
 	/*
 	Hashtable<Integer, Route> getRouteList() {
