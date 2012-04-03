@@ -28,16 +28,16 @@ public class AlarmDetailActivity extends Activity {
         //name.setText("*wake up*");
         route.setText(Control.getAlarmRouteName());
         //route.setText("AM Commute");
-        hour.setText((String)(Control.getAlarmHour()));
+        hour.setText("" + Control.getAlarmHour());
         //hour.setText("9");
-        minute.setText((String)(Control.getAlarmMinute()));
+        minute.setText("" + Control.getAlarmMinute());
         //minute.setText("30");
-        month.setText((String)(Control.getAlarmMonth() + 1));
+        month.setText("" + Control.getAlarmMonth() + 1);
         //month.setText("3");
-        day.setText((String)(Control.getAlarmDay()));
+        day.setText(((Integer)(Control.getAlarmDay())).toString());
         //day.setText("28");
-        year.setText((String)(Control.getAlarmYear() + 1900));
-        //year.setText("2012"); 
+        year.setText(((Integer)(Control.getAlarmYear() + 1900)).toString());
+        //year.setText("2012");
     }
     
     public void onDelete(View alarm) {
