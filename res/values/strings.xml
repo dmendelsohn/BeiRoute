@@ -3,5 +3,32 @@
 
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">BeiRoute</string>
+    <string name="default_route_name">Morning Commute</string>
+    <string name="start_location">Start Location</string>
+    <string name="end_location">End Location</string>
+    <string name="route_duration">Duration</string>
+    <string name="default_start_location">Baker House</string>
+    <string name="default_end_location">Stata Center</string>
+    <string name="default_route_duration">9 min, 46 sec</string>
+    <string name="route_set_alert">Set Alert</string>
+    <string name="arrival_time">Arrival Time</string>
+    <string name="set_alarm">Set New Alarm!</string>
+    <string name="alarm_date">Date</string>
+    <string name="alert_me">Alert Me:</string>
+    <string name="drop_down">Dropdown Menu</string>
+    <string name="save_set_alarm">Set Alarm</string>
+    <string name="delete_route">Delete Route</string>
+    <string name="route_name">Route Name</string>
+    <string name="new_route_title">New Route</string>
+    <string name="saved_routes">Saved Routes</string>
+    <string name="route">Route</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
+    <string name="day">Day</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="delete_alarm">Delete Alarm</string>
+    <string name="alarm_name">Alarm Name</string>
+    <string name="delete_this_route">Delete This Route</string>
 
 </resources>
