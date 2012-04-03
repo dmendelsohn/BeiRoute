@@ -7,34 +7,12 @@ import android.location.Location;
 
 public class Route {
 	
-	private int id;
-	
-	//private static LinkedList<Route> routes;
-	//private static int numRoutes = 0;
-	
+	private String name;
 	private String startLoc;
 	private String endLoc;
 	private long startTime;
 	private long duration;
 	private LinkedList<Location> nodes;
-	
-	/*
-	public static int createNewRoute() {
-		if (routes == null) {
-			routes = new LinkedList<Route>();
-		}
-			
-		return numRoutes++;
-	}
-	
-	public static void deleteRoute(int id) {
-		routes.remove(id);
-	}
-	
-	public static void deleteAllRoutes() {
-		routes = null;
-	}
-	*/
 	
 	public Route() {
 		setStartTime();
@@ -46,6 +24,13 @@ public class Route {
 	}
 	public LinkedList<Location> getLocFixes() {
 		return nodes;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getStartLoc() {
