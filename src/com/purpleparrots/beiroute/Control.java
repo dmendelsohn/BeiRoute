@@ -18,13 +18,13 @@ public class Control {
 	private static AlarmService as;
 	private static WakeLockService ws;
 	
-	private static int maxRouteId = -1;
-	private static int workingRouteId = -1;
+	private static int maxRouteId = 0;
+	private static int workingRouteId = 0;
 	private static Hashtable<Integer, Route> routeList;
 	private static Route workingRoute;
 	
-	private static int maxAlarmId = -1;
-	private static int workingAlarmId = -1;
+	private static int maxAlarmId = 0;
+	private static int workingAlarmId = 0;
 	private static Hashtable<Integer, Alarm> alarmList;
 	private static Alarm workingAlarm;
 	
@@ -63,14 +63,10 @@ public class Control {
 		hasBeenInitialized = true;
 	}
 	
-	public static int createRoute() {
-		maxRouteId++;
-		Log.d("jb", "maxRouteId is currently = " + maxRouteId);
-		routeList.put(maxRouteId, new Route());
-		Log.d("jb", routeList.toString());
-		setWorkingRoute(maxRouteId);
-		Log.d("jb", "workingRouteId = " + workingRouteId);
-		return workingRouteId;
+	public static void createRoute() {
+		if (workingRoute == null) {
+			workingRoute = new Route();
+		}
 	}
 	/*
 	public int getWorkingRoute() {
@@ -93,9 +89,14 @@ public class Control {
 		Log.d("jb", "3");
 	}
 	
+	public static long getElapsedTime() {
+		workingRoute.updateDuration();
+		return workingRoute.getDuration();
+	}
+	
 	public static long stopRecording() {
 		//ts.stopService(null);
-		workingRoute.setDuration();
+		workingRoute.updateDuration();
 		//ws.release();
 		return workingRoute.getDuration();
 	}
@@ -104,6 +105,9 @@ public class Control {
 		workingRoute.setName(name);
 		workingRoute.setStartLoc(startLoc);
 		workingRoute.setEndLoc(endLoc);
+		routeList.put(maxRouteId, workingRoute);
+		workingRoute = null;
+		maxRouteId++;
 	}
 	
 	public static void deleteRoute() {
