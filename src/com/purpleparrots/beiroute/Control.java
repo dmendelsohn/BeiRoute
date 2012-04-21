@@ -32,7 +32,7 @@ public class Control {
 	static final int RECORDING = 1;
 	static final int RECORDED = 2;
 	
-	private static int newRouteState;
+	private static int newRouteState = NOT_YET_RECORDED;
 	
 	public static int getNewRouteState() {
 		return newRouteState;
@@ -73,11 +73,13 @@ public class Control {
 		hasBeenInitialized = true;
 	}
 	
+	/*
 	public static void createRoute() {
 		if (workingRoute == null) {
 			workingRoute = new Route();
 		}
 	}
+	*/
 	/*
 	public int getWorkingRoute() {
 		return workingRouteId;
@@ -97,6 +99,7 @@ public class Control {
 		//ts.startService(new Intent()); // TODO: information in intent
 		workingRoute.setStartTime();
 		Log.d("jb", "3");
+		newRouteState = RECORDING;
 	}
 	
 	public static long getElapsedTime() {
@@ -111,6 +114,7 @@ public class Control {
 		//ts.stopService(null);
 		workingRoute.updateDuration();
 		//ws.release();
+		newRouteState = RECORDED;
 		return workingRoute.getDuration();
 	}
 	
@@ -119,8 +123,9 @@ public class Control {
 		workingRoute.setStartLoc(startLoc);
 		workingRoute.setEndLoc(endLoc);
 		routeList.put(maxRouteId, workingRoute);
-		workingRoute = null;
+		workingRoute = new Route();
 		maxRouteId++;
+		newRouteState = NOT_YET_RECORDED;
 	}
 	
 	public static void deleteRoute() {
