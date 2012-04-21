@@ -100,11 +100,11 @@ public class Control {
 	}
 	
 	public static long getElapsedTime() {
-		if (workingRoute.getStartTime() == 0) {
-			workingRoute.updateDuration();
-			return workingRoute.getDuration();
+		if (workingRoute == null || workingRoute.getStartTime() == 0) {
+			return 0;
 		}
-		return 0;
+		workingRoute.updateDuration();
+		return workingRoute.getDuration();
 	}
 	
 	public static long stopRecording() {
