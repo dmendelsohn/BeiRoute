@@ -93,14 +93,11 @@ public class Control {
 	
 	public static void startRecording() {
 		//ws.acquire();
-		Log.d("jb", "1");
 		ts.setWorkingRoute(workingRoute);
-		Log.d("jb", "2");
-		Log.d("jb", ts.TAG);
 		//ts.startService(new Intent()); // TODO: information in intent
 		workingRoute.setStartTime();
-		Log.d("jb", "3");
 		newRouteState = RECORDING;
+		Log.d("Control", "newRouteState = RECORDING");
 	}
 	
 	public static long getElapsedTime() {
@@ -116,6 +113,7 @@ public class Control {
 		workingRoute.updateDuration();
 		//ws.release();
 		newRouteState = RECORDED;
+		Log.d("Control", "newRouteState = RECORDED");
 		return workingRoute.getDuration();
 	}
 	
@@ -127,6 +125,7 @@ public class Control {
 		workingRoute = new Route();
 		maxRouteId++;
 		newRouteState = NOT_YET_RECORDED;
+		Log.d("Control", "newRouteState = NOT_YET_RECORDED");
 	}
 	
 	public static void deleteRoute() {
