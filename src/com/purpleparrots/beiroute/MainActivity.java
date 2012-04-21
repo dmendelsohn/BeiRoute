@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnClickListener {
 	Hashtable<String, Integer> routeHash;
 	Hashtable<String, Integer> alarmHash;
+	Button top_button;
+	private Handler handler;
+	long currentTimeDisplayed;
 	
     /** Called when the activity is first created. */
     @Override
@@ -24,30 +28,76 @@ public class MainActivity extends Activity implements OnClickListener {
     	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        Log.d("Dan's Log", "Got to switch case");
+        switch(Control.getNewRouteState()){
+        case 0:
+        	makeTopButton();
+        	top_button.setText("New Route");
+        	top_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
+                	Control.createRoute();
+                	Log.d("jb", Control.getRouteName());
+                	startActivity(i);
+                }
+            });
+        	break;
+        case 1:
+        	makeTopButton();
+        	currentTimeDisplayed = Control.getElapsedTime();
+        	
+        	updateTime();
+        	handler = new Handler();
+        	handler.removeCallbacks(updateTimeTask);
+        	handler.postDelayed(updateTimeTask, 1000);
+        	
+        	top_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
+                	Control.createRoute();
+                	Log.d("jb", Control.getRouteName());
+                	startActivity(i);
+                }
+        	});
+        	break;
+        case 2:
+        	break;
+        default:
+        	break;
+        }
         routeHash = Control.getRoutes();
         alarmHash = Control.getAlarms();
-        /*routeHash = new Hashtable<String,Integer>();
-        routeHash.put("Morning commute1", 12345);
-        routeHash.put("Morning commute2", 12345);
-        routeHash.put("Morning commute3", 12345);
-        routeHash.put("Morning commute4", 12345);
-        //routeHash.put("Morning commute5", 12345);
-        //routeHash.put("Morning commute6", 12345);
-        //routeHash.put("Morning commute7", 12345);
-        //routeHash.put("Morning commute8", 12345);
-        //routeHash.put("Morning commute9", 12345);
-        alarmHash = new Hashtable<String,Integer>();
-        alarmHash.put("Wake up alarm1", 54321);
-        alarmHash.put("Wake up alarm2", 54321);
-        //alarmHash.put("Wake up alarm3", 54321);
-        //alarmHash.put("Wake up alarm4", 54321);
-        //alarmHash.put("Wake up alarm5", 54321);
-        //alarmHash.put("Wake up alarm6", 54321);
-        //alarmHash.put("Wake up alarm7", 54321);*/
+        makeTopText();
         fillRoutes();
         makeMiddleText();
         fillAlarms();
     }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	//currentTimeDisplayed = Control.getElapsedTime();
+    	//currentTimeDisplayed = 18000;
+    	handler.removeCallbacks(updateTimeTask);
+    	handler.postDelayed(updateTimeTask, 1000);
+    }
+    
+    @Override
+    protected void onStop() {
+    	super.onStop();
+    	if (handler != null)
+    		handler.removeCallbacks(updateTimeTask);
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	if ( handler != null )
+    	handler.removeCallbacks(updateTimeTask);
+    	handler = null;	
+    }
+    
     
     public void fillRoutes() {
     	LinearLayout routeLayout = (LinearLayout)findViewById(R.id.home_parent);
@@ -115,11 +165,22 @@ public class MainActivity extends Activity implements OnClickListener {
     	}
     }
     
-    public void newRouteClick(View v) {
+    /*public void newRouteClick(View v) {
     	Intent i = new Intent(this, NewRouteActivity.class);
     	Control.createRoute();
     	Log.d("jb", Control.getRouteName());
     	startActivity(i);
+    }*/
+    
+    public void makeTopText() {
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.MATCH_PARENT,
+				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    	TextView tv = new TextView(this);
+    	tv.setText("Saved Routes");
+    	tv.setTextSize(20);
+    	layout.addView(tv, p);
     }
     
     public void makeMiddleText() {
@@ -132,5 +193,29 @@ public class MainActivity extends Activity implements OnClickListener {
     	tv.setTextSize(20);
     	layout.addView(tv, p);
     }
+    
+    public void makeTopButton() {
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.MATCH_PARENT,
+				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    	Button b = new Button(this);
+    	layout.addView(b, p);
+    	top_button = b;
+    }
+    
+    private Runnable updateTimeTask = new Runnable() {
+    	public void run() {
+        currentTimeDisplayed += 1000;
+    	updateTime();
+    	handler.postDelayed(this, 1000);
+    	}
+    };
+
+    private void updateTime() {
+    	top_button.setText("Currently recording  " + Helper.millisToPaddedString(currentTimeDisplayed));
+    }
+    
+
     
 }

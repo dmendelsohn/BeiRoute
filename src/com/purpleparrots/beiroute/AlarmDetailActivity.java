@@ -14,6 +14,7 @@ public class AlarmDetailActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.d("Dan's Log", "Created Alarm Detail Activity");
+    	Log.d("Dan's Log", "database has month value stored as: " + Control.getAlarmMonth());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
         name = (TextView)findViewById(R.id.alarm_detail_name_field);
@@ -32,7 +33,7 @@ public class AlarmDetailActivity extends Activity {
         //hour.setText("9");
         minute.setText("" + Control.getAlarmMinute());
         //minute.setText("30");
-        month.setText("" + Control.getAlarmMonth() + 1);
+        month.setText(((Integer)(Control.getAlarmMonth() + 1)).toString());
         //month.setText("3");
         day.setText(((Integer)(Control.getAlarmDay())).toString());
         //day.setText("28");

@@ -44,7 +44,6 @@
 
                 <requestFocus />
             </EditText>
-
         </TableRow>
 
         <TableRow
@@ -64,7 +63,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10" />
-
         </TableRow>
 
         <TableRow
@@ -84,8 +82,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10" />
-
         </TableRow>
     </TableLayout>
+
+    <TextView
+        android:id="@+id/newRouteTimerDisplay"
+        style="@style/styleName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Not Started" />
 
 </LinearLayout>
