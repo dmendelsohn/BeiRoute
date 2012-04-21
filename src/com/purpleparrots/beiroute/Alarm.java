@@ -2,7 +2,7 @@ package com.purpleparrots.beiroute;
 
 import java.util.GregorianCalendar;
 
-public class Alarm {
+public class Alarm extends AndroidSerializable {
 	
 	private String name;
 	private Route route;

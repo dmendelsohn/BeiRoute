@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import android.location.Location;
 
-public class Route {
+public class Route extends AndroidSerializable {
 	
 	private String name;
 	private String startLoc;
@@ -16,12 +16,12 @@ public class Route {
 	
 	public Route() {
 		name = "New Route";
-		setStartTime();
+		startTime = 0;
 	}
 	
 	public void addLocFix(Location loc) {
 		nodes.add(loc);
-		setDuration();
+		updateDuration();
 	}
 	public LinkedList<Location> getLocFixes() {
 		return nodes;
@@ -58,7 +58,7 @@ public class Route {
 	public long getDuration() {
 		return duration;
 	}
-	public void setDuration() {
+	public void updateDuration() {
 		duration = new Date().getTime() - startTime;
 	}
 	

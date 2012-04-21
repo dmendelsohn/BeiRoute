@@ -28,6 +28,16 @@ public class Control {
 	private static Hashtable<Integer, Alarm> alarmList;
 	private static Alarm workingAlarm;
 	
+	static final int NOT_YET_RECORDED = 0;
+	static final int RECORDING = 1;
+	static final int RECORDED = 2;
+	
+	private static int newRouteState;
+	
+	public static int getNewRouteState() {
+		return newRouteState;
+	}
+	
 	private static class WakeLockService extends Service {
 
 		private PowerManager pm;
@@ -90,8 +100,11 @@ public class Control {
 	}
 	
 	public static long getElapsedTime() {
-		workingRoute.updateDuration();
-		return workingRoute.getDuration();
+		if (workingRoute.getStartTime() == 0) {
+			workingRoute.updateDuration();
+			return workingRoute.getDuration();
+		}
+		return 0;
 	}
 	
 	public static long stopRecording() {
