@@ -71,6 +71,7 @@ public class Control {
 		routeList = new Hashtable<Integer, Route>();
 		alarmList = new Hashtable<Integer, Alarm>();
 		hasBeenInitialized = true;
+		workingRoute = new Route();
 	}
 	
 	/*
