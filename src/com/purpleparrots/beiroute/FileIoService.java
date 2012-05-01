@@ -1,8 +1,8 @@
 package com.purpleparrots.beiroute;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import android.app.Service;
 import android.content.Intent;
@@ -16,12 +16,13 @@ public class FileIoService extends Service {
 		return null;
 	}
 	
-	public FileOutputStream getOutputStream(String localPath) throws FileNotFoundException {
-		return openFileOutput(localPath, MODE_PRIVATE);
+	public OutputStreamWriter getOutputStream(String localPath) throws FileNotFoundException {
+		return new OutputStreamWriter(openFileOutput(localPath, MODE_PRIVATE));
+		
 	}
 	
-	public FileInputStream getInputStream(String localPath) throws FileNotFoundException {
-		return openFileInput(localPath);
+	public InputStreamReader getInputStream(String localPath) throws FileNotFoundException {
+		return new InputStreamReader(openFileInput(localPath));
 	}
 
 }
