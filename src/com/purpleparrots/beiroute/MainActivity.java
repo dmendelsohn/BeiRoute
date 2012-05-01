@@ -19,6 +19,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	Hashtable<String, Integer> alarmHash;
 	Button top_button;
 	private Handler handler;
+	LinearLayout whole_screen;
 	long currentTimeDisplayed;
 	
     /** Called when the activity is first created. */
@@ -28,64 +29,54 @@ public class MainActivity extends Activity implements OnClickListener {
     	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        Log.d("Dan's Log", "Got to switch case");
+        whole_screen = (LinearLayout)findViewById(R.id.home_parent);
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	whole_screen.removeAllViews();
+    	
+    	makeTopButton();
+    	
+    	Log.d("Dan's Log", "Got to switch case");
         switch(Control.getNewRouteState()){
-        case 0:
-        	makeTopButton();
+        case Control.NOT_YET_RECORDED:
         	top_button.setText("New Route");
-        	top_button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
-                	Control.createRoute();
-                	Log.d("jb", Control.getRouteName());
-                	startActivity(i);
-                }
-            });
         	break;
-        case 1:
-        	makeTopButton();
+        case Control.RECORDING:
         	currentTimeDisplayed = Control.getElapsedTime();
-        	
         	updateTime();
         	handler = new Handler();
         	handler.removeCallbacks(updateTimeTask);
         	handler.postDelayed(updateTimeTask, 1000);
-        	
-        	top_button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
-                	Control.createRoute();
-                	Log.d("jb", Control.getRouteName());
-                	startActivity(i);
-                }
-        	});
         	break;
-        case 2:
+        case Control.RECORDED:
+        	top_button.setText("See Unsaved Route");
         	break;
         default:
         	break;
         }
+        top_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
+            	//Control.createRoute();
+            	Log.d("jb", Control.getRouteName());
+            	startActivity(i);
+            }
+        });
         routeHash = Control.getRoutes();
         alarmHash = Control.getAlarms();
         makeTopText();
         fillRoutes();
         makeMiddleText();
         fillAlarms();
+    	
     }
     
     @Override
-    protected void onResume() {
-    	super.onResume();
-    	//currentTimeDisplayed = Control.getElapsedTime();
-    	//currentTimeDisplayed = 18000;
-    	handler.removeCallbacks(updateTimeTask);
-    	handler.postDelayed(updateTimeTask, 1000);
-    }
-    
-    @Override
-    protected void onStop() {
-    	super.onStop();
+    protected void onPause() {
+    	super.onPause();
     	if (handler != null)
     		handler.removeCallbacks(updateTimeTask);
     }
