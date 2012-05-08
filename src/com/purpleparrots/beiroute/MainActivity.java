@@ -26,8 +26,8 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.d("Dan's Log", "Created Main Activity");
-    	FileIoService fs = new FileIoService();
-    	fs.startService(new Intent());
+    	//FileIoService fs = new FileIoService();
+    	//fs.startService(new Intent());
     	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
