@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
-	Hashtable<String, Integer> routeHash;
-	Hashtable<String, Integer> alarmHash;
+	Hashtable<Integer, String> routeHash;
+	Hashtable<Integer, String> alarmHash;
 	Button top_button;
 	private Handler handler;
 	LinearLayout whole_screen;
@@ -36,37 +36,18 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onResume() {
     	super.onResume();
     	whole_screen.removeAllViews();
-    	
-    	makeTopButton();
-    	
-    	Log.d("Dan's Log", "Got to switch case");
-        switch(Control.getNewRouteState()){
-        case Control.NOT_YET_RECORDED:
-        	top_button.setText("New Route");
-        	break;
-        case Control.RECORDING:
-        	currentTimeDisplayed = Control.getElapsedTime();
-        	updateTime();
-        	handler = new Handler();
-        	handler.removeCallbacks(updateTimeTask);
-        	handler.postDelayed(updateTimeTask, 1000);
-        	break;
-        case Control.RECORDED:
-        	top_button.setText("See Unsaved Route");
-        	break;
-        default:
-        	break;
-        }
-        top_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
-            	//Control.createRoute();
-            	Log.d("jb", Control.getRouteName());
-            	startActivity(i);
-            }
-        });
-        routeHash = Control.getRoutes();
-        alarmHash = Control.getAlarms();
+   
+    	int followState = 0;
+    	if (/*Control.getFollowingState() == Control.FOlLOWING*/ followState == 1) {
+        	double completedPortion = 0.3;
+    	}
+    	else {
+    		makeTopButton();
+    	}
+        //routeHash = Control.getRoutes();
+        routeHash = dummyRouteHash();
+        //alarmHash = Control.getAlarms();
+        alarmHash = dummyAlarmHash();
         makeTopText();
         fillRoutes();
         makeMiddleText();
@@ -101,17 +82,17 @@ public class MainActivity extends Activity implements OnClickListener {
     		routeLayout.addView(tv, p);
     	}
     	else {
-    		Enumeration<String> keys = routeHash.keys();
+    		Enumeration<Integer> keys = routeHash.keys();
     		while(keys.hasMoreElements()) {
-    			  String name = keys.nextElement();
+    			  int routeId = keys.nextElement();
     			  
        			  LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
     					  LinearLayout.LayoutParams.MATCH_PARENT,
     					  LinearLayout.LayoutParams.WRAP_CONTENT );
        			  
        			  Button buttonView = new Button(this);
-       			  buttonView.setText(name);
-     					  
+       			  buttonView.setText(routeHash.get(routeId));
+    			  buttonView.setId(routeId);
        			  buttonView.setOnClickListener(this);
        			  routeLayout.addView(buttonView, p);
     		}
@@ -129,14 +110,15 @@ public class MainActivity extends Activity implements OnClickListener {
       		alarmLayout.addView(tv, p);
     	}
     	else {
-    		Enumeration<String> keys = alarmHash.keys();
+    		Enumeration<Integer> keys = alarmHash.keys();
     		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 					  LinearLayout.LayoutParams.MATCH_PARENT,
 					  LinearLayout.LayoutParams.WRAP_CONTENT );
     		while(keys.hasMoreElements()) {
-    			  String name = keys.nextElement();
+    			  int alarmId = keys.nextElement();
     			  Button buttonView = new Button(this);
-       			  buttonView.setText(name);	  
+    			  buttonView.setId(alarmId);
+       			  buttonView.setText(alarmHash.get(alarmId));	  
        			  buttonView.setOnClickListener(this);
        			  alarmLayout.addView(buttonView, p);
     		}
@@ -144,14 +126,14 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     public void onClick(View v) {
-    	if (routeHash.containsKey( ((Button) v).getText().toString() ) ) {
+    	if (routeHash.containsKey(v.getId())) {
     		Intent i = new Intent(this, RouteDetailActivity.class);
-    		Control.setWorkingRoute(routeHash.get( ((Button) v).getText().toString()));
+    		Control.setWorkingRoute(v.getId());
     		startActivity(i);
     	}
-    	else if (alarmHash.containsKey( ((Button) v).getText().toString() ) ) {
+    	else if (alarmHash.containsKey(v.getId())) {
     		Intent i = new Intent(this, AlarmDetailActivity.class);
-    		Control.setWorkingAlarm(alarmHash.get( ((Button) v).getText().toString()));
+    		Control.setWorkingAlarm(v.getId());
     		startActivity(i);
     	}
     }
@@ -193,6 +175,33 @@ public class MainActivity extends Activity implements OnClickListener {
     	Button b = new Button(this);
     	layout.addView(b, p);
     	top_button = b;
+    	
+    	Log.d("Dan's Log", "Got to switch case");
+        switch(Control.getNewRouteState()){
+        case Control.NOT_YET_RECORDED:
+        	top_button.setText("New Route");
+        	break;
+        case Control.RECORDING:
+        	currentTimeDisplayed = Control.getElapsedTime();
+        	updateTime();
+        	handler = new Handler();
+        	handler.removeCallbacks(updateTimeTask);
+        	handler.postDelayed(updateTimeTask, 1000);
+        	break;
+        case Control.RECORDED:
+        	top_button.setText("See Unsaved Route");
+        	break;
+        default:
+        	break;
+        }
+        top_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	Intent i = new Intent(MainActivity.this, NewRouteActivity.class);
+            	//Control.createRoute();
+            	Log.d("jb", Control.getRouteName());
+            	startActivity(i);
+            }
+        });
     }
     
     private Runnable updateTimeTask = new Runnable() {
@@ -207,6 +216,20 @@ public class MainActivity extends Activity implements OnClickListener {
     	top_button.setText("Currently recording  " + Helper.millisToPaddedString(currentTimeDisplayed));
     }
     
-
+    private Hashtable<Integer, String> dummyRouteHash() {
+    	Hashtable<Integer,String> result = new Hashtable<Integer, String>();
+    	for (int i = 0; i < 10; i++) {
+    		result.put(1000 + i, "TestRoute # " + i);
+    	}
+    	return result;
+    }
+    
+    private Hashtable<Integer, String> dummyAlarmHash() {
+    	Hashtable<Integer,String> result = new Hashtable<Integer, String>();
+    	for (int i = 0; i < 10; i++) {
+    		result.put(2000 + i, "TestAlarm # " + i);
+    	}
+    	return result;
+    }
     
 }
