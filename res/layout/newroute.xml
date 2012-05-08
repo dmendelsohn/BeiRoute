@@ -87,7 +87,7 @@
 
     <TextView
         android:id="@+id/newRouteTimerDisplay"
-        style="@style/styleName"
+        style="@+style/styleName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Not Started" />
