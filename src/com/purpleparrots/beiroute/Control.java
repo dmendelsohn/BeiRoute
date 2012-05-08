@@ -172,10 +172,10 @@ public class Control {
 		return workingRoute.getDuration();
 	}
 
-	public static Hashtable<String, Integer> getRoutes() {
-		Hashtable<String, Integer> out = new Hashtable<String, Integer>();
+	public static Hashtable<Integer, String> getRoutes() {
+		Hashtable<Integer, String> out = new Hashtable<Integer, String>();
 		for (int key : routeList.keySet()) {
-			out.put(((Route) routeList.get(key)).getName(), key);
+			out.put(key, ((Route) routeList.get(key)).getName());
 		}
 		return out;
 	}
@@ -191,10 +191,10 @@ public class Control {
 		workingAlarm = (Alarm) alarmList.get(workingAlarmId);
 	}
 
-	public static Hashtable<String, Integer> getAlarms() {
-		Hashtable<String, Integer> out = new Hashtable<String, Integer>();
+	public static Hashtable<Integer, String> getAlarms() {
+		Hashtable<Integer, String> out = new Hashtable<Integer, String>();
 		for (int key : alarmList.keySet()) {
-			out.put(((Alarm) alarmList.get(key)).getName(), key);
+			out.put(key, ((Alarm) alarmList.get(key)).getName());
 		}
 		return out;
 	}
