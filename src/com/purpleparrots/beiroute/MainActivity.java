@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements OnClickListener {
     	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        whole_screen = (LinearLayout)findViewById(R.id.home_parent);
+        whole_screen = (LinearLayout)findViewById(R.id.home_parent); 
     }
     
     @Override
