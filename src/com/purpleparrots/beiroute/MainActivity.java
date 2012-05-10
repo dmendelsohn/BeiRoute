@@ -26,8 +26,6 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.d("Dan's Log", "Created Main Activity");
-    	//FileIoService fs = new FileIoService();
-    	//fs.startService(new Intent());
     	Control.initialize();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -46,10 +44,10 @@ public class MainActivity extends Activity implements OnClickListener {
     	else {
     		makeTopButton();
     	}
-        //routeHash = Control.getRoutes();
-        routeHash = dummyRouteHash();
-        //alarmHash = Control.getAlarms();
-        alarmHash = dummyAlarmHash();
+        routeHash = Control.getRoutes();
+        //routeHash = dummyRouteHash();
+        alarmHash = Control.getAlarms();
+        //alarmHash = dummyAlarmHash();
         makeTopText();
         fillRoutes();
         makeMiddleText();
@@ -84,9 +82,11 @@ public class MainActivity extends Activity implements OnClickListener {
     		routeLayout.addView(tv, p);
     	}
     	else {
+    		Log.d("diag", routeHash.keySet().toString());
     		Enumeration<Integer> keys = routeHash.keys();
     		while(keys.hasMoreElements()) {
     			  int routeId = keys.nextElement();
+    			  Log.d("diag", routeHash.get(routeId).toString());
     			  
        			  LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
     					  LinearLayout.LayoutParams.MATCH_PARENT,

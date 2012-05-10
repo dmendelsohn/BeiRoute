@@ -81,11 +81,20 @@
 
     </LinearLayout>
 
+ 	<!-- 
     <WebView
         android:id="@+id/webView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.5" />
+        -->
+    <com.google.android.maps.MapView
+        android:id="@+id/mapView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:apiKey="01V0Hs1Hek2S4BZUf0DE2Y1AHGR17ua2ByG6hqA"
+                 />
 
     <LinearLayout
         android:layout_width="match_parent"

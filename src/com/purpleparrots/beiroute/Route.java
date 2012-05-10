@@ -10,8 +10,8 @@ public class Route extends AndroidSerializable {
 	private String name;
 	private String startLoc;
 	private String endLoc;
-	private long startTime;
-	private long duration;
+	public long startTime; // should really be private
+	public long duration; // should really be private
 	private LinkedList<Location> nodes;
 	
 	public Route() {

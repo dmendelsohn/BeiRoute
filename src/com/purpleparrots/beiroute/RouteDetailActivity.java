@@ -1,5 +1,7 @@
 package com.purpleparrots.beiroute;
 
+import com.google.android.maps.MapActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class RouteDetailActivity extends Activity {
+public class RouteDetailActivity extends MapActivity {
 	TextView name, start, end, duration;
 	//getRouteName, getRouteStartLoc, getRouteEndLoc, getRouteDuration
 
@@ -62,4 +64,10 @@ public class RouteDetailActivity extends Activity {
     	s += " sec";
     	return s;
     }
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
