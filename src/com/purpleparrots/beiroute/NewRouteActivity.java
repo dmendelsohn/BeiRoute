@@ -87,6 +87,7 @@ public class NewRouteActivity extends Activity {
     protected void onResume() {
     	Log.d("Dan's Log", "Called onResume in NewActivityRoute");
     	super.onResume();
+    	Control.workOnNewRoute();
     	currentTimeDisplayed = Control.getElapsedTime();
     	updateTime();
     	handler = new Handler();

@@ -28,6 +28,11 @@ public class Control {
 	private static int workingRouteId = 0;
 	private static Hashtable<Integer, Route> routeList;
 	private static Route workingRoute;
+	private static Route newRoute;
+	// workingRoute either points to the same route as newRoute
+	// (if it represents the new route not yet added to the route hash)
+	// or points to one of the routes already in the hash, in which case
+	// workingRouteId will be the key.
 	
 	private static int maxAlarmId = 0;
 	private static int workingAlarmId = 0;
@@ -43,7 +48,7 @@ public class Control {
 	public static int getNewRouteState() {
 		return newRouteState;
 	}
-	
+
 	private static class WakeLockService extends Service {
 
 		private PowerManager pm;
@@ -77,6 +82,7 @@ public class Control {
 		routeList = new Hashtable<Integer, Route>();
 		alarmList = new Hashtable<Integer, Alarm>();
 		workingRoute = new Route();
+		newRoute = workingRoute;
 		hasBeenInitialized = true;
 		populateForDemo(routeList, alarmList);
 	}
@@ -120,6 +126,10 @@ public class Control {
 		workingRoute = routeList.get(workingRouteId);
 	}
 	
+	public static void workOnNewRoute() {
+		workingRoute = newRoute;
+	}
+	
 	public static void startRecording(Context context) {
 		ts.setWorkingRoute(workingRoute);
 		workingRoute.setStartTime();
@@ -149,11 +159,11 @@ public class Control {
 	}
 	
 	public static void saveRoute(String name, String startLoc, String endLoc) {
-		workingRoute.setName(name);
-		workingRoute.setStartLoc(startLoc);
-		workingRoute.setEndLoc(endLoc);
-		routeList.put(maxRouteId, workingRoute);
-		workingRoute = new Route();
+		newRoute.setName(name);
+		newRoute.setStartLoc(startLoc);
+		newRoute.setEndLoc(endLoc);
+		routeList.put(maxRouteId, newRoute);
+		newRoute = new Route();
 		maxRouteId++;
 		//setWorkingRoute(maxRouteId);
 		newRouteState = NOT_YET_RECORDED;
@@ -235,11 +245,18 @@ public class Control {
 		return out;
 	}
 	
-	public static int saveAlarm(String name, GregorianCalendar time) {
+	public static void saveAlarm(String name, GregorianCalendar time) {
 		maxAlarmId--;
 		alarmList.put(maxAlarmId, new Alarm(name, workingRoute, time, as));
 		setWorkingAlarm(maxAlarmId);
-		return workingAlarmId;
+		/*
+        Intent i = new Intent(this, MainActivity.class);
+    	startActivity(i);
+    	*/
+        //Log.d("diag", "about to start service");
+        //startActivity(new Intent(android.provider.AlarmClock.ACTION_SET_ALARM));
+        //startService(new Intent(this, NotificationService.class));
+        //Log.d("diag", "just finished startService");
 	}
 	
 	public static void saveAlarm(String name, int year, int month, int day, int hour, int minute) {

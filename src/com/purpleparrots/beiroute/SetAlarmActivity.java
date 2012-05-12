@@ -155,16 +155,8 @@ public class SetAlarmActivity extends Activity {
         month -= 1;
         year -= 1900;
         */
-    	Control.saveAlarm(name, mYear-1900, mMonth, mDay, mHour, mMinute);
         Log.d("Dan's Log", "Saving alarm with data: " + name + ", " + mHour + ", "+ mMinute + ", "
         		+ mMonth + ", " + mDay + ", " + (mYear-1900));
-        /*
-        Intent i = new Intent(this, MainActivity.class);
-    	startActivity(i);
-    	*/
-        Log.d("diag", "about to start service");
-        startActivity(new Intent(android.provider.AlarmClock.ACTION_SET_ALARM));
-        //startService(new Intent(this, NotificationService.class));
-        Log.d("diag", "just finished startService");
+    	Control.saveAlarm(name, mYear-1900, mMonth, mDay, mHour, mMinute);
     }
 }
