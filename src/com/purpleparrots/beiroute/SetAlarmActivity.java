@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -162,7 +163,8 @@ public class SetAlarmActivity extends Activity {
     	startActivity(i);
     	*/
         Log.d("diag", "about to start service");
-        startService(new Intent(this, NotificationService.class));
+        startActivity(new Intent(android.provider.AlarmClock.ACTION_SET_ALARM));
+        //startService(new Intent(this, NotificationService.class));
         Log.d("diag", "just finished startService");
     }
 }

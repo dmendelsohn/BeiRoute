@@ -1,6 +1,10 @@
 package com.purpleparrots.beiroute;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.OverlayItem;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 
 public class RouteDetailActivity extends MapActivity {
 	TextView name, start, end, duration;
+	MapView map;
 	//getRouteName, getRouteStartLoc, getRouteEndLoc, getRouteDuration
 
     @Override
@@ -22,7 +27,7 @@ public class RouteDetailActivity extends MapActivity {
         start = (TextView)findViewById(R.id.route_detail_start);
         end = (TextView)findViewById(R.id.route_detail_end);
         duration = (TextView)findViewById(R.id.route_detail_duration);
-        
+        map = (MapView)findViewById(R.id.mapView1);
         name.setText(Control.getRouteName());
         //name.setText("Morning Commute");
         start.setText(Control.getRouteStartLoc());
@@ -32,6 +37,29 @@ public class RouteDetailActivity extends MapActivity {
         String stringDuration = longToString(Control.getRouteDuration());
         //String stringDuration = longToString(750000);
         duration.setText(stringDuration);
+        
+        MapController mc = map.getController();
+        mc.setCenter(Control.getRouteMapCenter());
+        mc.setZoom(15);
+        
+        GeoPoint pts[] = Control.getRouteLocFixes();
+        if (pts != null) {
+        	if (pts.length > 2) {
+        		GeoPoint midPts[] = new GeoPoint[pts.length - 2];
+        		for (int i = 0; i < midPts.length; i++) {
+        			midPts[i] = pts[i + 1];
+        		}
+        		MyItemizedOverlay DotIconOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.dot));
+        		DotIconOverlay.addGeoPoints(midPts);
+        		map.getOverlays().add(DotIconOverlay);
+        	}
+        	MyItemizedOverlay AIconOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.letter_a));
+        	AIconOverlay.addOverlay(new OverlayItem(pts[0], "Title", "Snippet"));
+        	MyItemizedOverlay BIconOverlay = new MyItemizedOverlay(this.getResources().getDrawable(R.drawable.letter_b));
+        	BIconOverlay.addOverlay(new OverlayItem(pts[pts.length - 1], "Title", "Snippet"));
+        	map.getOverlays().add(AIconOverlay);
+        	map.getOverlays().add(BIconOverlay);
+        }
     }
     
     public void onSet(View route) {

@@ -156,7 +156,7 @@ public class NewRouteActivity extends Activity {
     	if (state == Control.NOT_YET_RECORDED) {
         	recordButton.setText("Stop Recording");
     		state++;
-    		Control.startRecording();
+    		Control.startRecording(this);
     		handler.removeCallbacks(updateTimeTask);
         	handler.postDelayed(updateTimeTask, 1000);
 

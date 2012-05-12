@@ -2,10 +2,16 @@ package com.purpleparrots.beiroute;
 
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+import com.google.android.maps.GeoPoint;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
@@ -16,7 +22,7 @@ public class Control {
 	
 	private static TrackerService ts;
 	private static AlarmService as;
-	private static WakeLockService ws;
+	//private static WakeLockService ws;
 	
 	private static int maxRouteId = 0;
 	private static int workingRouteId = 0;
@@ -66,7 +72,7 @@ public class Control {
 	public static void initialize() {
 		if (hasBeenInitialized) return;
 		ts = new TrackerService();
-		ws = new WakeLockService();
+		//ws = new WakeLockService();
 		as = new AlarmService();
 		routeList = new Hashtable<Integer, Route>();
 		alarmList = new Hashtable<Integer, Alarm>();
@@ -77,6 +83,26 @@ public class Control {
 	
 	private static void populateForDemo(Hashtable<Integer, Route> routeList, Hashtable<Integer, Alarm> alarmList) {
 		workingRoute.duration = 300000;
+		Location l = new Location("test");
+		l.setLatitude(42.355);
+		l.setLongitude(-71.09);
+		workingRoute.addLocFix(l);
+		l = new Location("test");
+		l.setLatitude(42.356);
+		l.setLongitude(-71.091);
+		workingRoute.addLocFix(l);
+		l = new Location("test");
+		l.setLatitude(42.357);
+		l.setLongitude(-71.092);
+		workingRoute.addLocFix(l);
+		l = new Location("test");
+		l.setLatitude(42.358);
+		l.setLongitude(-71.093);
+		workingRoute.addLocFix(l);
+		l = new Location("test");
+		l.setLatitude(42.359);
+		l.setLongitude(-71.094);
+		workingRoute.addLocFix(l);
 		saveRoute("Monday morning", "Maseeh", "32-124");
 		workingRoute.duration = 300000;
 		saveRoute("W/F morning", "Maseeh", "26-100");
@@ -84,30 +110,24 @@ public class Control {
 		saveRoute("House to Campus", "House", "77 Mass Ave");
 	}
 	
-	/*
-	public static void createRoute() {
-		if (workingRoute == null) {
-			workingRoute = new Route();
-		}
+	public static Route getWorkingRoute() {
+		return workingRoute;
 	}
-	*/
-	/*
-	public int getWorkingRoute() {
-		return workingRouteId;
-	}
-	*/
+	
 	public static void setWorkingRoute(int id) {
+		Log.d("diag", "workingRoute set to " + id);
 		workingRouteId = id;
 		workingRoute = routeList.get(workingRouteId);
 	}
 	
-	public static void startRecording() {
-		//ws.acquire();
+	public static void startRecording(Context context) {
 		ts.setWorkingRoute(workingRoute);
-		//ts.startService(new Intent()); // TODO: information in intent
 		workingRoute.setStartTime();
+		Log.d("diag", "Starting TrackerService");
+		context.startService(new Intent(context, TrackerService.class));
+		Log.d("diag", "Started TrackerService");
 		newRouteState = RECORDING;
-		Log.d("Control", "newRouteState = RECORDING");
+		Log.d("diag", "newRouteState = RECORDING");
 	}
 	
 	public static long getElapsedTime() {
@@ -122,11 +142,9 @@ public class Control {
 	}
 	
 	public static long stopRecording() {
-		//ts.stopService(null);
 		workingRoute.updateDuration();
-		//ws.release();
 		newRouteState = RECORDED;
-		Log.d("Control", "newRouteState = RECORDED");
+		Log.d("diag", "newRouteState = RECORDED");
 		return workingRoute.getDuration();
 	}
 	
@@ -139,7 +157,7 @@ public class Control {
 		maxRouteId++;
 		//setWorkingRoute(maxRouteId);
 		newRouteState = NOT_YET_RECORDED;
-		Log.d("Control", "newRouteState = NOT_YET_RECORDED");
+		Log.d("diag", "newRouteState = NOT_YET_RECORDED");
 	}
 	
 	public static void deleteRoute() {
@@ -165,6 +183,25 @@ public class Control {
 	
 	public static long getRouteDuration() {
 		return workingRoute.getDuration();
+	}
+	
+	public static GeoPoint[] getRouteLocFixes() {
+		LinkedList<Location> ll = workingRoute.getLocFixes();
+		if (ll.isEmpty()) {
+			return null;
+		}
+		Iterator<Location> li = ll.iterator();
+		GeoPoint[] points = new GeoPoint[ll.size()];
+		Log.d("diag", ((Integer) ll.size()).toString());
+		for (int i = 0; i < points.length; i++) {
+			Location next = li.next();
+			points[i] = new GeoPoint((int) (next.getLatitude()*1000000), (int) (next.getLongitude()*1000000));
+		}
+		return points;
+	}
+	
+	public static GeoPoint getRouteMapCenter() {
+		return workingRoute.getMapCenter();
 	}
 	
 	public static Hashtable<Integer, String> getRoutes() {
@@ -225,7 +262,6 @@ public class Control {
 		return workingAlarm.getTime().get(GregorianCalendar.YEAR);
 	}
 	public static int getAlarmMonth() {
-		Log.d("jb", "" + workingAlarm.getTime().get(GregorianCalendar.MONTH));
 		return workingAlarm.getTime().get(GregorianCalendar.MONTH);
 	}
 	public static int getAlarmDay() {

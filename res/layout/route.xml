@@ -93,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
+        android:clickable="true"
         android:apiKey="01V0Hs1Hek2S4BZUf0DE2Y1AHGR17ua2ByG6hqA"
                  />
 
