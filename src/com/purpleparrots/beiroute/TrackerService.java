@@ -18,9 +18,10 @@ public class TrackerService extends Service implements LocationListener {
 	private Route workingRoute;
 	
 	public void onCreate() {
-		Log.d("jb", "Creating TrackerService...");
+		Log.d("diag", "Creating TrackerService...");
 		lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Log.d("jb", "Got location service");
+		Log.d("diag", "Got location service");
+		
 		//String provider = lm.getBestProvider(new Criteria(), true);
     }
 
@@ -30,23 +31,27 @@ public class TrackerService extends Service implements LocationListener {
 	}
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d("jb", "Starting...");
+		workingRoute = Control.getWorkingRoute();
+		Log.d("diag", "Starting...");
 		requestLocationUpdates();
-		Log.d("jb", "Submitted request for location lookups");
+		Log.d("diag", "Submitted request for location lookups");
 		return START_STICKY;
 	}
 
 	public void onLocationChanged(Location location) {
-		workingRoute.addLocFix(location);
+		if (Control.getNewRouteState() == Control.RECORDING) {
+			workingRoute.addLocFix(location);
+			Log.d("diag", location.toString());
+		}
 	}
 
 	public void onProviderDisabled(String provider) {
-		Log.d(TAG, "Disabled: " + provider);
+		Log.d("diag", "Disabled: " + provider);
         requestLocationUpdates();
 	}
 
 	public void onProviderEnabled(String provider) {
-		Log.d(TAG, "Enabled: " + provider);
+		Log.d("diag", "Enabled: " + provider);
 		requestLocationUpdates();
 	}
 
@@ -55,7 +60,8 @@ public class TrackerService extends Service implements LocationListener {
 	}
 	
 	private void requestLocationUpdates() {
-		lm.requestLocationUpdates(lm.getBestProvider(new Criteria(), true), (long) interval, 0.0f, this);
+		//lm.requestLocationUpdates(lm.getBestProvider(new Criteria(), true), (long) interval, 0.0f, this);
+		lm.requestLocationUpdates(lm.GPS_PROVIDER, (long) interval, 0.0f, this);
 	}
 
 	public void setWorkingRoute(Route route) {

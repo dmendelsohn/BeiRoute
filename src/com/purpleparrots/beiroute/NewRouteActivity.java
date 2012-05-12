@@ -87,6 +87,7 @@ public class NewRouteActivity extends Activity {
     protected void onResume() {
     	Log.d("Dan's Log", "Called onResume in NewActivityRoute");
     	super.onResume();
+    	Control.workOnNewRoute();
     	currentTimeDisplayed = Control.getElapsedTime();
     	updateTime();
     	handler = new Handler();
@@ -156,7 +157,7 @@ public class NewRouteActivity extends Activity {
     	if (state == Control.NOT_YET_RECORDED) {
         	recordButton.setText("Stop Recording");
     		state++;
-    		Control.startRecording();
+    		Control.startRecording(this);
     		handler.removeCallbacks(updateTimeTask);
         	handler.postDelayed(updateTimeTask, 1000);
 
