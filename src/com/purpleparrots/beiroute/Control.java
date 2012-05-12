@@ -245,7 +245,7 @@ public class Control {
 		return out;
 	}
 	
-	public static void saveAlarm(String name, GregorianCalendar time) {
+	public static void saveAlarm(String name, GregorianCalendar time, Context context) {
 		maxAlarmId--;
 		alarmList.put(maxAlarmId, new Alarm(name, workingRoute, time, as));
 		setWorkingAlarm(maxAlarmId);
@@ -253,14 +253,12 @@ public class Control {
         Intent i = new Intent(this, MainActivity.class);
     	startActivity(i);
     	*/
-        //Log.d("diag", "about to start service");
         //startActivity(new Intent(android.provider.AlarmClock.ACTION_SET_ALARM));
-        //startService(new Intent(this, NotificationService.class));
-        //Log.d("diag", "just finished startService");
+        context.startService(new Intent(context, NotificationService.class));
 	}
 	
-	public static void saveAlarm(String name, int year, int month, int day, int hour, int minute) {
-		saveAlarm(name, new GregorianCalendar(year, month, day, hour, minute));
+	public static void saveAlarm(String name, int year, int month, int day, int hour, int minute, Context context) {
+		saveAlarm(name, new GregorianCalendar(year, month, day, hour, minute), context);
 	}
 	
 	public static void deleteAlarm() {

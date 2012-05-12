@@ -157,6 +157,6 @@ public class SetAlarmActivity extends Activity {
         */
         Log.d("Dan's Log", "Saving alarm with data: " + name + ", " + mHour + ", "+ mMinute + ", "
         		+ mMonth + ", " + mDay + ", " + (mYear-1900));
-    	Control.saveAlarm(name, mYear-1900, mMonth, mDay, mHour, mMinute);
+    	Control.saveAlarm(name, mYear-1900, mMonth, mDay, mHour, mMinute, this);
     }
 }
