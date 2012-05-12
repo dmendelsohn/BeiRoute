@@ -30,31 +30,14 @@ public abstract class AndroidSerializable {
 	*/
 	
 	public static void serializeTable(Hashtable<Integer, AndroidSerializable> table, String tableName) throws IOException {
+		
 		/*
-		String s = "";
-		for (int k: table.keySet()) {
-			serialize(k, table.get(k));
-			s += "" + k + " ";
-		}
-		OutputStreamWriter osw = fileIo.getOutputStream(tableName);
-		osw.write(s);
-		osw.close();
-		*/
 		String json = g.toJson(table);
 		OutputStreamWriter osw = fileIo.getOutputStream(tableName);
 		g.toJson(table, osw);
 		osw.close();
+		*/
 	}
-	
-	/*
-	private static AndroidSerializable deserialize(int id) throws IOException {
-		String FILENAME = "" + id;
-		InputStreamReader isr = fileIo.getInputStream(FILENAME);
-		AndroidSerializable obj = g.fromJson(isr, AndroidSerializable.class);
-		isr.close();
-		return obj;
-	}
-	*/
 	
 	public static Hashtable<Integer, AndroidSerializable> deserializeTable(String tableName) {
 		/*
@@ -74,6 +57,8 @@ public abstract class AndroidSerializable {
 		}
 		return table;
 		*/
+		
+		/*
 		InputStreamReader isr;
 		try {
 			isr = fileIo.getInputStream(tableName);
@@ -88,5 +73,7 @@ public abstract class AndroidSerializable {
 			e.printStackTrace();
 		}
 		return table;
+		*/
+		return new Hashtable<Integer, AndroidSerializable>();
 	}
 }

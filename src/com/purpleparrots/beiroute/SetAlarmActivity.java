@@ -1,27 +1,24 @@
 package com.purpleparrots.beiroute;
 
-import java.util.Calendar;
-
+//import java.util.Calendar;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
+//import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+//import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.DatePicker;
-import android.app.DatePickerDialog;
+//import android.app.DatePickerDialog;
 
 public class SetAlarmActivity extends Activity {
-	EditText nameField, hourField, minuteField, monthField, dayField, yearField;
-	//String nameToSave;
-	//int hourToSave, minuteToSave, monthToSave, dayToSave, yearToSave;
+	EditText nameField;
 	
-	private TextView mTimeDisplay;
+	/*private TextView mTimeDisplay;
     private Button mPickTime;
     private int mHour;
     private int mMinute;
@@ -30,58 +27,43 @@ public class SetAlarmActivity extends Activity {
     private Button mPickDate;
     private int mYear;
     private int mMonth;
-    private int mDay;
+    private int mDay;*/
     
-    static final int TIME_DIALOG_ID = 0;
-    static final int DATE_DIALOG_ID = 1;
+    TimePicker timePicker;
+    DatePicker datePicker;
+    TextView topText;
+    
+    static final int REPEAT_DIALOG_ID = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.makealarm);
         
+        topText = (TextView)findViewById(R.id.set_alarm_top_text);
         nameField = (EditText)findViewById(R.id.alarm_set_name_field);
-        /*hourField = (EditText)findViewById(R.id.alarm_set_hour_field);
-        minuteField = (EditText)findViewById(R.id.alarm_set_minute_field);
-        monthField = (EditText)findViewById(R.id.alarm_set_month_field);
-        dayField = (EditText)findViewById(R.id.alarm_set_day_field);
-        yearField = (EditText)findViewById(R.id.alarm_set_year_field);*/
+        timePicker = (TimePicker)findViewById(R.id.timePicker);
+        datePicker = (DatePicker)findViewById(R.id.datePicker);
         
-        mTimeDisplay = (TextView) findViewById(R.id.timeDisplay);
-        mPickTime = (Button) findViewById(R.id.pickTime);
-
+        String routeName = Control.getRouteName();
+        topText.setText("Set Alert for : " + routeName);
         
-        mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        mPickDate = (Button) findViewById(R.id.pickDate);
-        
-        mPickTime.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                showDialog(TIME_DIALOG_ID);
-            }
-        });
-        
-        mPickDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                showDialog(DATE_DIALOG_ID);
-            }
-        });
-        
-        final Calendar c1 = Calendar.getInstance();
+        /*final Calendar c1 = Calendar.getInstance();
         mHour = c1.get(Calendar.HOUR_OF_DAY);
         mMinute = c1.get(Calendar.MINUTE);
         
         final Calendar c2 = Calendar.getInstance();
         mYear = c2.get(Calendar.YEAR);
         mMonth = c2.get(Calendar.MONTH);
-        mDay = c2.get(Calendar.DAY_OF_MONTH);
+        mDay = c2.get(Calendar.DAY_OF_MONTH);*/
 
 
         // display the current date (this method is below)
-        updateTimeDisplay();
-        updateDateDisplay();
+        //updateTimeDisplay();
+        //updateDateDisplay();
     }
     
- // updates the time we display in the TextView
+ /*// updates the time we display in the TextView
     private void updateTimeDisplay() {
         mTimeDisplay.setText(
             new StringBuilder()
@@ -104,9 +86,9 @@ public class SetAlarmActivity extends Activity {
                     .append(mMonth + 1).append("-")
                     .append(mDay).append("-")
                     .append(mYear).append(" "));
-    }
+    }*/
     
-    private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
+    /*private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
     		new TimePickerDialog.OnTimeSetListener() {
     	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
     		mHour = hourOfDay;
@@ -127,16 +109,19 @@ public class SetAlarmActivity extends Activity {
                         updateDateDisplay();
                     }
                 };
-		        
+		        */
+    
    @Override
    protected Dialog onCreateDialog(int id) {
 	   switch (id) {
-	   case TIME_DIALOG_ID:
+	   /*case TIME_DIALOG_ID:
 		   	return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute, false);
 	   case DATE_DIALOG_ID:
    			return new DatePickerDialog(this,
    					mDateSetListener,
-   					mYear, mMonth, mDay);
+   					mYear, mMonth, mDay);*/
+	   case REPEAT_DIALOG_ID:
+		   // what do?
 	   }
 	   return null;
    }
@@ -145,18 +130,14 @@ public class SetAlarmActivity extends Activity {
     	Log.d("Dan's Log", "Pushed set alarm button");
     	
         String name = nameField.getText().toString();
-        /*int hour = Integer.parseInt(hourField.getText().toString());
-        int minute = Integer.parseInt(minuteField.getText().toString());
-        int month = Integer.parseInt(monthField.getText().toString());
-        int day = Integer.parseInt(dayField.getText().toString());
-        int year = Integer.parseInt(yearField.getText().toString());
-        
-        month -= 1;
-        year -= 1900;
-        */
-    	Control.saveAlarm(name, mYear-1900, mMonth, mDay, mHour, mMinute);
-        Log.d("Dan's Log", "Saving alarm with data: " + name + ", " + mHour + ", "+ mMinute + ", "
-        		+ mMonth + ", " + mDay + ", " + (mYear-1900));
+        int hour = timePicker.getCurrentHour();
+        int minute = timePicker.getCurrentMinute();
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
+    	Control.saveAlarm(name, year-1900, month, day, hour, minute);
+        Log.d("Dan's Log", "Saving alarm with data: " + name + ", " + hour + ", "+ minute + ", "
+        		+ month + ", " + day + ", " + (year-1900));
         Intent i = new Intent(this, MainActivity.class);
     	startActivity(i);
     }

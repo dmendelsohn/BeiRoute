@@ -139,12 +139,13 @@ public class Control {
 		maxRouteId++;
 		newRouteState = NOT_YET_RECORDED;
 		Log.d("Control", "newRouteState = NOT_YET_RECORDED");
-		try {
+		Log.d("Control", routeList.get(maxRouteId - 1).toString());
+		/*try {
 			AndroidSerializable.serializeTable(routeList, "routes");
 		} catch (IOException e) {
 			// yeah idk
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public static void deleteRoute() {
