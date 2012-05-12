@@ -12,15 +12,25 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 	Hashtable<Integer, String> routeHash;
 	Hashtable<Integer, String> alarmHash;
 	Button top_button;
+	ProgressBar mRealProgress,mIdealProgress;
+	int mRealProgressStatus = 0;
+	int mIdealProgressStatus = 0;
 	private Handler handler;
+	private Handler realProgressHandler, idealProgressHandler;
 	LinearLayout whole_screen;
 	long currentTimeDisplayed;
+	
+	public static final int REAL_PROGRESS = 0;
+	public static final int IDEAL_PROGRESS = 1;
+	int counter1 = 0;
+	int counter2 = 0;
 	
     /** Called when the activity is first created. */
     @Override
@@ -30,6 +40,8 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         whole_screen = (LinearLayout)findViewById(R.id.home_parent);
+        realProgressHandler = new Handler();
+        idealProgressHandler = new Handler();
     }
     
     @Override
@@ -39,7 +51,10 @@ public class MainActivity extends Activity implements OnClickListener {
    
     	int followState = 0;
     	if (/*Control.getFollowingState() == Control.FOlLOWING*/ followState == 1) {
-        	double completedPortion = 0.3;
+    		makeRealProgressText();
+    		makeRealProgressBar();
+    		makeIdealProgressText();
+    		makeIdealProgressBar();
     	}
     	else {
     		makeTopButton();
@@ -206,6 +221,91 @@ public class MainActivity extends Activity implements OnClickListener {
         });
     }
     
+    private void makeRealProgressText() {
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.MATCH_PARENT,
+				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    	TextView tv = new TextView(this);
+    	//tv.setText("Actual progress on " + Control.getRouteName());
+    	tv.setText("Actual progress on HardcodedTestRoute");
+    	tv.setTextSize(20);
+    	layout.addView(tv, p);
+    }
+    
+    private void makeIdealProgressText() {
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.MATCH_PARENT,
+				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    	TextView tv = new TextView(this);
+    	//tv.setText("Ideal progress on " + Control.getRouteName());
+    	tv.setText("Ideal progress on HardcodedTestRoute");
+    	tv.setTextSize(20);
+    	layout.addView(tv, p);
+    }
+    
+    private void makeRealProgressBar() {
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.MATCH_PARENT,
+				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    	ProgressBar pb = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+    	layout.addView(pb, p);
+    	mRealProgress = pb;
+    	
+    	// Start lengthy operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (mRealProgressStatus < 100) {
+                	if (counter1 == 2000) {
+                		mRealProgressStatus += 1; //obviously change this to do something real
+                		counter1 = 0;
+                	}
+                	else
+                		counter1++;                    //mRealProgressStatus = 100*Control.getRealProgress();
+                    // Update the progress bar
+                    realProgressHandler.post(new Runnable() {
+                        public void run() {
+                            mRealProgress.setProgress(mRealProgressStatus);
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+    
+    private void makeIdealProgressBar() {
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				  LinearLayout.LayoutParams.MATCH_PARENT,
+				  LinearLayout.LayoutParams.WRAP_CONTENT );
+    	ProgressBar pb = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+    	layout.addView(pb, p);
+    	mIdealProgress = pb;
+    	
+    	// Start lengthy operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (mIdealProgressStatus < 100) {
+                	if (counter2 == 1000) {
+                		mIdealProgressStatus += 1; //obviously change this to do something real
+                		counter2 = 0;
+                	}
+                	else
+                		counter2++;
+                    //mIdealProgressStatus = 100*Control.getIdealProgress();
+                    // Update the progress bar
+                    idealProgressHandler.post(new Runnable() {
+                        public void run() {
+                            mIdealProgress.setProgress(mIdealProgressStatus);
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+    
     private Runnable updateTimeTask = new Runnable() {
     	public void run() {
         currentTimeDisplayed += 1000;
@@ -220,7 +320,7 @@ public class MainActivity extends Activity implements OnClickListener {
     
     private Hashtable<Integer, String> dummyRouteHash() {
     	Hashtable<Integer,String> result = new Hashtable<Integer, String>();
-    	for (int i = 0; i < 10; i++) {
+    	for (int i = 0; i < 5; i++) {
     		result.put(1000 + i, "TestRoute # " + i);
     	}
     	return result;
@@ -228,7 +328,7 @@ public class MainActivity extends Activity implements OnClickListener {
     
     private Hashtable<Integer, String> dummyAlarmHash() {
     	Hashtable<Integer,String> result = new Hashtable<Integer, String>();
-    	for (int i = 0; i < 10; i++) {
+    	for (int i = 0; i < 5; i++) {
     		result.put(2000 + i, "TestAlarm # " + i);
     	}
     	return result;
