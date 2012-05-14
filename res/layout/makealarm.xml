@@ -27,12 +27,45 @@
         android:layout_height="wrap_content" >
 
         <CheckBox
-            android:id="@+id/checkBox1"
+            android:id="@+id/repeat_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="Repeat" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/repeat_check_box"
+            android:text="@string/advance_notice"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/repeat_check_box"
+            android:layout_below="@+id/textView1"
+            android:ems="10"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editText1"
+            android:layout_alignBottom="@+id/editText1"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/editText1"
+            android:text="minutes"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
 
@@ -67,7 +100,6 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:onClick="onClick"
         android:text="@string/save_set_alarm" />
 
