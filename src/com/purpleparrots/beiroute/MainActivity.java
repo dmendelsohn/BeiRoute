@@ -1,5 +1,6 @@
 package com.purpleparrots.beiroute;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -10,8 +11,10 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,11 +23,13 @@ public class MainActivity extends Activity implements OnClickListener {
 	Hashtable<Integer, String> alarmHash;
 	Button top_button;
 	ProgressBar mRealProgress,mIdealProgress;
+	ListView routeLv, alarmLv;
+	TextView routeText, alarmText;
 	int mRealProgressStatus = 0;
 	int mIdealProgressStatus = 0;
 	private Handler handler;
 	private Handler realProgressHandler, idealProgressHandler;
-	LinearLayout whole_screen;
+	LinearLayout whole_screen, dynamicLayout;
 	long currentTimeDisplayed;
 	
 	public static final int REAL_PROGRESS = 0;
@@ -40,6 +45,11 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         whole_screen = (LinearLayout)findViewById(R.id.home_parent);
+        dynamicLayout = (LinearLayout)findViewById(R.id.dynamic_layout);
+        routeLv = (ListView)findViewById(R.id.route_listview);
+        alarmLv = (ListView)findViewById(R.id.alarm_listview);
+        routeText = (TextView)findViewById(R.id.route_text);
+        alarmText = (TextView)findViewById(R.id.alarm_text);
         realProgressHandler = new Handler();
         idealProgressHandler = new Handler();
     }
@@ -47,9 +57,9 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onResume() {
     	super.onResume();
-    	whole_screen.removeAllViews();
+    	dynamicLayout.removeAllViews();
    
-    	int followState = 0;
+    	int followState = 1;
     	if (/*Control.getFollowingState() == Control.FOlLOWING*/ followState == 1) {
     		makeRealProgressText();
     		makeRealProgressBar();
@@ -63,9 +73,9 @@ public class MainActivity extends Activity implements OnClickListener {
         //routeHash = dummyRouteHash();
         alarmHash = Control.getAlarms();
         //alarmHash = dummyAlarmHash();
-        makeTopText();
+        //makeTopText();
         fillRoutes();
-        makeMiddleText();
+        //makeMiddleText();
         fillAlarms();
     	
     }
@@ -89,15 +99,20 @@ public class MainActivity extends Activity implements OnClickListener {
     public void fillRoutes() {
     	LinearLayout routeLayout = (LinearLayout)findViewById(R.id.home_parent);
     	if (routeHash.size() == 0) {
-    		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+    		routeText.setText("You have no saved routes");
+    		/*LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
   				  LinearLayout.LayoutParams.MATCH_PARENT,
   				  LinearLayout.LayoutParams.WRAP_CONTENT );
     		TextView tv = new TextView(this);
     		tv.setText("You have no saved routes");
-    		routeLayout.addView(tv, p);
+    		routeLayout.addView(tv, p);*/
     	}
     	else {
-    		//Log.d("diag", routeHash.keySet().toString());
+    		routeText.setText("Saved routes:");
+    		routeLv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,
+    				Collections.list(routeHash.elements())));
+    		/*
+    		//Log.d("diag", routeHash.keySet().toString());    		
     		Enumeration<Integer> keys = routeHash.keys();
     		while(keys.hasMoreElements()) {
     			  int routeId = keys.nextElement();
@@ -112,21 +127,27 @@ public class MainActivity extends Activity implements OnClickListener {
     			  buttonView.setId(routeId);
        			  buttonView.setOnClickListener(this);
        			  routeLayout.addView(buttonView, p);
-    		}
+    		} */
     	}
     }
     
     public void fillAlarms() {
     	LinearLayout alarmLayout = (LinearLayout)findViewById(R.id.home_parent);
     	if (alarmHash.size() == 0) {
-    		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+    		alarmText.setText("You have no saved alerts");
+    		
+    		/*LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
     				  LinearLayout.LayoutParams.MATCH_PARENT,
     				  LinearLayout.LayoutParams.WRAP_CONTENT );
       		TextView tv = new TextView(this);
       		tv.setText("You have no saved alarms");
-      		alarmLayout.addView(tv, p);
+      		alarmLayout.addView(tv, p);*/
     	}
     	else {
+    		alarmText.setText("Saved alerts:");
+    		alarmLv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,
+    				Collections.list(alarmHash.elements())));
+    		
     		Enumeration<Integer> keys = alarmHash.keys();
     		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 					  LinearLayout.LayoutParams.MATCH_PARENT,
@@ -185,7 +206,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     public void makeTopButton() {
-    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.dynamic_layout);
     	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -222,7 +243,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     private void makeRealProgressText() {
-    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.dynamic_layout);
     	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -234,7 +255,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     private void makeIdealProgressText() {
-    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.dynamic_layout);
     	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -246,7 +267,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     private void makeRealProgressBar() {
-    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.dynamic_layout);
     	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -276,7 +297,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     private void makeIdealProgressBar() {
-    	LinearLayout layout = (LinearLayout)findViewById(R.id.home_parent);
+    	LinearLayout layout = (LinearLayout)findViewById(R.id.dynamic_layout);
     	LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
