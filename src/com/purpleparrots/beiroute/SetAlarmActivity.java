@@ -83,7 +83,7 @@ public class SetAlarmActivity extends Activity {
 		   //LayoutInflater factory = LayoutInflater.from(this);
 		   //final View dialogView = factory.inflate(R.layout.repeatdialog, null);
            dialog.setContentView(R.layout.repeatdialog);
-           dialog.setTitle("This is my custom dialog box");
+           dialog.setTitle("Alert Repeat Dialog");
            dialog.setCancelable(true);
            RadioGroup rg = (RadioGroup)dialog.findViewById(R.id.radioGroup1);
            rg.check(0);
