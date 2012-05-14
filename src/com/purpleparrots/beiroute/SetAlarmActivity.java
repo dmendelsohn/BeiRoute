@@ -49,8 +49,8 @@ public class SetAlarmActivity extends Activity {
         datePicker = (DatePicker)findViewById(R.id.datePicker);
         advanceText = (TextView)findViewById(R.id.textView2);
         
-        String routeName = Control.getRouteName();
-        topText.setText("Schedule route " + routeName + ", arriving at:");
+        //String routeName = Control.getRouteName();
+        topText.setText("Schedule route, arriving at:");
         
         repeatCheckBox = (CheckBox)findViewById(R.id.repeat_check_box);
         repeatCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener()

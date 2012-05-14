@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -52,6 +54,30 @@ public class MainActivity extends Activity implements OnClickListener {
         alarmText = (TextView)findViewById(R.id.alarm_text);
         realProgressHandler = new Handler();
         idealProgressHandler = new Handler();
+        
+        routeLv.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                int position, long id) {
+            		Log.d("Dan's Log", "Called route listview click with text: " + 
+            				((TextView)view).getText().toString());
+            		
+                	Intent i = new Intent(MainActivity.this, RouteDetailActivity.class);
+                	Control.setWorkingRoute(getKeyFromValue(routeHash, ((TextView)view).getText().toString()));
+                	startActivity(i);
+            }
+
+        });
+        
+        alarmLv.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                int position, long id) {
+            		Log.d("Dan's Log", "Called alarm listview click");
+            		Intent i = new Intent(MainActivity.this, AlarmDetailActivity.class);
+                	Control.setWorkingAlarm(getKeyFromValue(alarmHash, ((TextView)view).getText().toString()));
+                	startActivity(i);
+            }
+        });
+            	
     }
     
     @Override
@@ -60,7 +86,7 @@ public class MainActivity extends Activity implements OnClickListener {
     	super.onResume();
     	dynamicLayout.removeAllViews();
    
-    	int followState = 0;
+    	//int followState = 0;
     	if (Control.getFollowingState() == Control.FOLLOWING) {
     		makeRealProgressText();
     		makeRealProgressBar();
@@ -152,7 +178,7 @@ public class MainActivity extends Activity implements OnClickListener {
     		alarmLv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,
     				Collections.list(alarmHash.elements())));
     		
-    		Enumeration<Integer> keys = alarmHash.keys();
+    		/*Enumeration<Integer> keys = alarmHash.keys();
     		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 					  LinearLayout.LayoutParams.MATCH_PARENT,
 					  LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -163,7 +189,7 @@ public class MainActivity extends Activity implements OnClickListener {
        			  buttonView.setText(alarmHash.get(alarmId));	  
        			  buttonView.setOnClickListener(this);
        			  alarmLayout.addView(buttonView, p);
-    		}
+    		}*/
     	}
     }
     
@@ -361,4 +387,16 @@ public class MainActivity extends Activity implements OnClickListener {
     	return result;
     }
     
+    private int getKeyFromValue(Hashtable<Integer,String> hash, String value) {
+    	Enumeration<Integer> keys = hash.keys();
+		
+		while(keys.hasMoreElements()) {
+			  int id = keys.nextElement();
+			  if (hash.get(id).equals(value))
+				  return id;
+		}
+		Log.d("Dan's Log", "getKeyOfValue failed to find anything");
+		return 0;
+
+    }
 }
