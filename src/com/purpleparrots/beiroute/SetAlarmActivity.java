@@ -3,18 +3,18 @@ package com.purpleparrots.beiroute;
 //import java.util.Calendar;
 import android.app.Activity;
 import android.app.Dialog;
-//import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.View;
-//import android.widget.Button;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.DatePicker;
-//import android.app.DatePickerDialog;
 
 public class SetAlarmActivity extends Activity {
 	EditText nameField;
@@ -32,7 +32,8 @@ public class SetAlarmActivity extends Activity {
     
     TimePicker timePicker;
     DatePicker datePicker;
-    TextView topText;
+    TextView topText, advanceText;
+    CheckBox repeatCheckBox;
     
     static final int REPEAT_DIALOG_ID = 0;
 
@@ -45,75 +46,31 @@ public class SetAlarmActivity extends Activity {
         nameField = (EditText)findViewById(R.id.alarm_set_name_field);
         timePicker = (TimePicker)findViewById(R.id.timePicker);
         datePicker = (DatePicker)findViewById(R.id.datePicker);
+        advanceText = (TextView)findViewById(R.id.textView2);
         
         String routeName = Control.getRouteName();
-        topText.setText("Set Alert for : " + routeName);
+        topText.setText("Schedule route " + routeName + ", arriving at:");
         
-        /*final Calendar c1 = Calendar.getInstance();
-        mHour = c1.get(Calendar.HOUR_OF_DAY);
-        mMinute = c1.get(Calendar.MINUTE);
+        repeatCheckBox = (CheckBox)findViewById(R.id.repeat_check_box);
+        repeatCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener()
+        	{
+        	    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+        	    {
+        	        if (isChecked)
+        	        {
+        	            Log.d("Dan's Log","Entered repeat checkbox logic");
+        	            showDialog(REPEAT_DIALOG_ID);
+        	        }
+
+        	    }
+        	});
         
-        final Calendar c2 = Calendar.getInstance();
-        mYear = c2.get(Calendar.YEAR);
-        mMonth = c2.get(Calendar.MONTH);
-        mDay = c2.get(Calendar.DAY_OF_MONTH);*/
-
-
-        // display the current date (this method is below)
-        //updateTimeDisplay();
-        //updateDateDisplay();
     }
-    
- /*// updates the time we display in the TextView
-    private void updateTimeDisplay() {
-        mTimeDisplay.setText(
-            new StringBuilder()
-                    .append(pad(mHour)).append(":")
-                    .append(pad(mMinute)));
-    }
-
-    private static String pad(int c) {
-        if (c >= 10)
-            return String.valueOf(c);
-        else
-            return "0" + String.valueOf(c);
-    }
-    
- // updates the date in the TextView
-    private void updateDateDisplay() {
-        mDateDisplay.setText(
-            new StringBuilder()
-                    // Month is 0 based so add 1
-                    .append(mMonth + 1).append("-")
-                    .append(mDay).append("-")
-                    .append(mYear).append(" "));
-    }*/
-    
-    /*private TimePickerDialog.OnTimeSetListener mTimeSetListener = 
-    		new TimePickerDialog.OnTimeSetListener() {
-    	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-    		mHour = hourOfDay;
-	        mMinute = minute;
-		    updateTimeDisplay();
-    	}
-    	};
-    
-    	// the callback received when the user "sets" the date in the dialog
-        private DatePickerDialog.OnDateSetListener mDateSetListener =
-                new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year, 
-                                          int monthOfYear, int dayOfMonth) {
-                        mYear = year;
-                        mMonth = monthOfYear;
-                        mDay = dayOfMonth;
-                        updateDateDisplay();
-                    }
-                };
-		        */
     
    @Override
    protected Dialog onCreateDialog(int id) {
+       final Dialog dialog = new Dialog(SetAlarmActivity.this);
+
 	   switch (id) {
 	   /*case TIME_DIALOG_ID:
 		   	return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute, false);
@@ -122,7 +79,33 @@ public class SetAlarmActivity extends Activity {
    					mDateSetListener,
    					mYear, mMonth, mDay);*/
 	   case REPEAT_DIALOG_ID:
-		   // what do?
+		   //LayoutInflater factory = LayoutInflater.from(this);
+		   //final View dialogView = factory.inflate(R.layout.repeatdialog, null);
+           dialog.setContentView(R.layout.repeatdialog);
+           dialog.setTitle("This is my custom dialog box");
+           dialog.setCancelable(true);
+           RadioGroup rg = (RadioGroup)dialog.findViewById(R.id.radioGroup1);
+           rg.check(0);
+           Button doneButton = (Button)dialog.findViewById(R.id.done_with_repeat);
+           Button cancelButton = (Button)dialog.findViewById(R.id.cancel_repeat);
+           
+           doneButton.setOnClickListener(new View.OnClickListener()
+           {
+        	   public void onClick(View v) {
+        		   Log.d("Dan's Log", "Got into done button's onClick");
+        		   dialog.cancel(); //we want it to do something real in the final implementation
+        	   }
+           });
+           
+           cancelButton.setOnClickListener(new View.OnClickListener()
+           {
+        	   public void onClick(View v) {
+        		   Log.d("Dan's Log", "Got into cancel button's onClick");
+        		   dialog.cancel();
+        	   }
+           });
+           
+           return dialog;
 	   }
 	   return null;
    }

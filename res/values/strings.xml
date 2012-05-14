@@ -33,5 +33,7 @@
     <string name="home">Home</string>
     <string name="default_time">9:00</string>
     <string name="change_the_date">Change the date</string>
+    <string name="sun">S</string>
+    <string name="advance_notice">Advance notice before I have to leave:</string>
 
 </resources>
