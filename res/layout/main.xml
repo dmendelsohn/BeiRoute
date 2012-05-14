@@ -3,7 +3,7 @@
     android:id="@+id/home_scroll_wrapper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:fillViewport="true" >
 
     <LinearLayout
         android:id="@+id/home_parent"
@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
         </LinearLayout>
 
         <TextView
@@ -26,11 +25,19 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <ListView
-            android:id="@+id/route_listview"
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="166dp" >
-        </ListView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/route_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.00" >
+            </ListView>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/alarm_text"
@@ -39,12 +46,18 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <ListView
-            android:id="@+id/alarm_listview"
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
+            <ListView
+                android:id="@+id/alarm_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
