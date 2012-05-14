@@ -137,7 +137,8 @@ public class SetAlarmActivity extends Activity {
         int month = datePicker.getMonth();
         int year = datePicker.getYear();
         Log.d("Dan's Log", "Saving alarm with data: " + name + ", " + hour + ", "+ minute + ", "
-        		+ month + ", " + day + ", " + (year-1900));
-        Control.saveAlarm(name, year-1900, month, day, hour, minute, this);
+        		+ month + ", " + day + ", " + (year));
+        Control.saveAlarm(name, year, month, day, hour, minute, this);
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

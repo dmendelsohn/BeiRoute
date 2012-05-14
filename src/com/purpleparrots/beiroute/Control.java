@@ -20,7 +20,7 @@ public class Control {
 	
 	private static boolean hasBeenInitialized = false;
 	
-	private static TrackerService ts;
+	private static GpsRecordService grs;
 	private static AlarmService as;
 	//private static WakeLockService ws;
 	
@@ -39,14 +39,29 @@ public class Control {
 	private static Hashtable<Integer, Alarm> alarmList;
 	private static Alarm workingAlarm;
 	
+	private static long followingStartTime = 0;
+	private static long followingDuration = 0;
+	private static GeoPoint lastGpsFix;
+	
 	static final int NOT_YET_RECORDED = 0;
 	static final int RECORDING = 1;
 	static final int RECORDED = 2;
 	
+	static final int NOT_FOLLOWING = 0;
+	static final int FOLLOWING = 1;
+	
 	private static int newRouteState = NOT_YET_RECORDED;
+	private static int followingState = NOT_FOLLOWING;
 	
 	public static int getNewRouteState() {
 		return newRouteState;
+	}
+	
+	public static int getFollowingState() {
+		return followingState;
+	}
+	public static void setFollowingState(int state) {
+		followingState = state;
 	}
 
 	private static class WakeLockService extends Service {
@@ -76,7 +91,7 @@ public class Control {
 	
 	public static void initialize() {
 		if (hasBeenInitialized) return;
-		ts = new TrackerService();
+		grs = new GpsRecordService();
 		//ws = new WakeLockService();
 		as = new AlarmService();
 		routeList = new Hashtable<Integer, Route>();
@@ -88,26 +103,32 @@ public class Control {
 	}
 	
 	private static void populateForDemo(Hashtable<Integer, Route> routeList, Hashtable<Integer, Alarm> alarmList) {
-		workingRoute.duration = 300000;
+		workingRoute.startTime = 1000000000000l;
+		workingRoute.duration = 30000;
 		Location l = new Location("test");
 		l.setLatitude(42.355);
 		l.setLongitude(-71.09);
+		l.setTime(1000000000000l);
 		workingRoute.addLocFix(l);
 		l = new Location("test");
 		l.setLatitude(42.356);
 		l.setLongitude(-71.091);
+		l.setTime(1000000007500l);
 		workingRoute.addLocFix(l);
 		l = new Location("test");
 		l.setLatitude(42.357);
 		l.setLongitude(-71.092);
+		l.setTime(1000000015000l);
 		workingRoute.addLocFix(l);
 		l = new Location("test");
 		l.setLatitude(42.358);
 		l.setLongitude(-71.093);
+		l.setTime(1000000022500l);
 		workingRoute.addLocFix(l);
 		l = new Location("test");
 		l.setLatitude(42.359);
 		l.setLongitude(-71.094);
+		l.setTime(1000000030000l);
 		workingRoute.addLocFix(l);
 		saveRoute("Monday morning", "Maseeh", "32-124");
 		workingRoute.duration = 300000;
@@ -131,10 +152,10 @@ public class Control {
 	}
 	
 	public static void startRecording(Context context) {
-		ts.setWorkingRoute(workingRoute);
+		grs.setWorkingRoute(workingRoute);
 		workingRoute.setStartTime();
 		Log.d("diag", "Starting TrackerService");
-		context.startService(new Intent(context, TrackerService.class));
+		context.startService(new Intent(context, GpsRecordService.class));
 		Log.d("diag", "Started TrackerService");
 		newRouteState = RECORDING;
 		Log.d("diag", "newRouteState = RECORDING");
@@ -195,7 +216,7 @@ public class Control {
 		return workingRoute.getDuration();
 	}
 	
-	public static GeoPoint[] getRouteLocFixes() {
+	public static GeoPoint[] getRouteGeoFixes() {
 		LinkedList<Location> ll = workingRoute.getLocFixes();
 		if (ll.isEmpty()) {
 			return null;
@@ -208,6 +229,20 @@ public class Control {
 			points[i] = new GeoPoint((int) (next.getLatitude()*1000000), (int) (next.getLongitude()*1000000));
 		}
 		return points;
+	}
+	
+	public static long[] getRouteRelativeTimes() {
+		LinkedList<Location> ll = workingRoute.getLocFixes();
+		if (ll.isEmpty()) {
+			return null;
+		}
+		Iterator<Location> li = ll.iterator();
+		long[] timestamps = new long[ll.size()];
+		for (int i = 0; i < timestamps.length; i++) {
+			Location next = li.next();
+			timestamps[i] = next.getTime() - workingRoute.startTime;
+		}
+		return timestamps;
 	}
 	
 	public static GeoPoint getRouteMapCenter() {
@@ -254,7 +289,11 @@ public class Control {
     	startActivity(i);
     	*/
         //startActivity(new Intent(android.provider.AlarmClock.ACTION_SET_ALARM));
-        context.startService(new Intent(context, NotificationService.class));
+		Intent intent = new Intent(context, NotificationService.class);
+        intent.putExtra("workingRouteId", workingRouteId);
+        intent.putExtra("workingAlarmId", workingAlarmId);
+        intent.putExtra("time", time.getTimeInMillis());
+		context.startService(intent);
 	}
 	
 	public static void saveAlarm(String name, int year, int month, int day, int hour, int minute, Context context) {
@@ -293,9 +332,23 @@ public class Control {
 		return workingAlarm.getTime();
 	}
 	
-	/*
-	Hashtable<Integer, GregorianCalendar> getAlarmList() {
-		return alarmList;
+	public static void setupFollowingRoute(long startTime, long duration) {
+		followingStartTime = startTime;
+		followingDuration = duration;
 	}
-	*/
+	
+	public static long getFollowingStartTime() {
+		return followingStartTime;
+	}
+	public static long getFollowingDuration() {
+		return followingDuration;
+	}
+
+	public static GeoPoint getLastGpsFix() {
+		return lastGpsFix;
+	}
+
+	public static void setLastGpsFix(GeoPoint lastGpsFix) {
+		Control.lastGpsFix = lastGpsFix;
+	}
 }

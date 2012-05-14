@@ -37,7 +37,7 @@ public class AlarmDetailActivity extends Activity {
         //month.setText("3");
         day.setText(((Integer)(Control.getAlarmDay())).toString());
         //day.setText("28");
-        year.setText(((Integer)(Control.getAlarmYear() + 1900)).toString());
+        year.setText(((Integer)(Control.getAlarmYear())).toString());
         //year.setText("2012");
     }
     

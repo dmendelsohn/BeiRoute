@@ -10,11 +10,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class TrackerService extends Service implements LocationListener {
+public class GpsRecordService extends Service implements LocationListener {
 	
-	final String TAG = "TrackerService";
 	LocationManager lm;
-	final long interval = 15000;
+	//final long interval = 15000;
+	final long interval = 0;
 	private Route workingRoute;
 	
 	public void onCreate() {

@@ -1,9 +1,15 @@
 package com.purpleparrots.beiroute;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,15 +24,25 @@ public class NotificationService extends Service {
 	}
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d("diag", "started NotificationService.onCreate()");
-		NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		Notification test = new Notification(android.R.drawable.alert_light_frame, "This is a ticker!", System.currentTimeMillis());
-		Intent notificationIntent = new Intent(this, MainActivity.class);
-		PendingIntent pi = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-		test.setLatestEventInfo(this, "Title", "Notification text", pi);
-		nm.notify(0, test);
-		Log.d("diag", "completed NotificationService.onCreate()");
+		Log.d("diag", "Service started");
+		int workingRouteId = intent.getIntExtra("workingRouteId", 0);
+		int workingAlarmId = intent.getIntExtra("workingAlarmId", 0);
+		long time = intent.getLongExtra("time", 0);
+		createScheduledNotification(time, workingRouteId, workingAlarmId, 0);
 		return 0;
+	}
+	
+	private void createScheduledNotification(long time, int workingRouteId, int workingAlarmId, int blah) {
+		Log.d("diag", "Creating scheduled notification...");
+		AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(getBaseContext().ALARM_SERVICE);
+		Intent intent = new Intent(this, TimeAlarm.class);
+		intent.putExtra("workingRouteId", workingRouteId);
+		intent.putExtra("workingAlarmId", workingAlarmId);
+		intent.putExtra("blah", blah);
+		PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		am.set(AlarmManager.RTC_WAKEUP, time, pi);
+		//am.set(AlarmManager.RTC_WAKEUP, 0, pi);
+		Log.d("diag", "" + (time - System.currentTimeMillis()));
 	}
 
 }
