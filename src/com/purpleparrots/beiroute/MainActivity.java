@@ -46,15 +46,19 @@ public class MainActivity extends Activity implements OnClickListener {
     
     @Override
     protected void onResume() {
+    	Log.d("diag mainActivity", "resuming mainActivity");
     	super.onResume();
     	whole_screen.removeAllViews();
    
     	int followState = 0;
-    	if (/*Control.getFollowingState() == Control.FOlLOWING*/ followState == 1) {
+    	if (Control.getFollowingState() == Control.FOLLOWING) {
     		makeRealProgressText();
     		makeRealProgressBar();
     		makeIdealProgressText();
     		makeIdealProgressBar();
+    		Log.d("diag mainActivity", "about to start progress bar thread");
+    		runProgressBars();
+    		Log.d("diag mainActivity", "should have started thread by now");
     	}
     	else {
     		makeTopButton();
@@ -253,26 +257,6 @@ public class MainActivity extends Activity implements OnClickListener {
     	ProgressBar pb = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
     	layout.addView(pb, p);
     	mRealProgress = pb;
-    	
-    	// Start lengthy operation in a background thread
-        new Thread(new Runnable() {
-            public void run() {
-                while (mRealProgressStatus < 100) {
-                	if (counter1 == 2000) {
-                		mRealProgressStatus += 1; //obviously change this to do something real
-                		counter1 = 0;
-                	}
-                	else
-                		counter1++;                    //mRealProgressStatus = 100*Control.getRealProgress();
-                    // Update the progress bar
-                    realProgressHandler.post(new Runnable() {
-                        public void run() {
-                            mRealProgress.setProgress(mRealProgressStatus);
-                        }
-                    });
-                }
-            }
-        }).start();
     }
     
     private void makeIdealProgressBar() {
@@ -284,6 +268,7 @@ public class MainActivity extends Activity implements OnClickListener {
     	layout.addView(pb, p);
     	mIdealProgress = pb;
     	
+    	/*
     	// Start lengthy operation in a background thread
         new Thread(new Runnable() {
             public void run() {
@@ -304,6 +289,27 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
             }
         }).start();
+        */
+    }
+    
+    private void runProgressBars() {
+    	new Thread(new Runnable() {
+    		public void run() {
+    			while (true) {
+    				Log.d("diag mainActivity", "loooop");
+    				mIdealProgressStatus = (int) (100 * Control.getIdealProgress());
+    				mRealProgressStatus = (int) (100 * Control.getRealProgress());
+    				mIdealProgress.setProgress(mIdealProgressStatus);
+    				mRealProgress.setProgress(mRealProgressStatus);
+    				try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    			}
+    		}
+    	});
     }
     
     private Runnable updateTimeTask = new Runnable() {

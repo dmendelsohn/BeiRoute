@@ -125,7 +125,7 @@ public class RouteDetailActivity extends MapActivity {
 	}
 	
 	MyItemizedOverlay oldIdeal = null;
-	MyItemizedOverlay oldActual = null;
+	MyItemizedOverlay oldReal = null;
 
 	private class MapDynamicStuff implements Runnable {
 		
@@ -163,22 +163,22 @@ public class RouteDetailActivity extends MapActivity {
 				}
 				Log.d("diag", "" + calcLat + " " + calcLng);
 				
-				// Display ideal location and actual location
+				// Display ideal location and real location
 				
-				MyItemizedOverlay IdealPointOverlay = new MyItemizedOverlay(context.getResources().getDrawable(R.drawable.symbol_crosshair));
-		    	IdealPointOverlay.addOverlay(new OverlayItem(new GeoPoint(calcLat, calcLng), "Title", "Snippet"));
-		    	MyItemizedOverlay ActualPointOverlay = new MyItemizedOverlay(context.getResources().getDrawable(R.drawable.jogging2));
-		    	ActualPointOverlay.addOverlay(new OverlayItem(Control.getLastGpsFix(), "Title", "Snippet"));
+				MyItemizedOverlay idealPointOverlay = new MyItemizedOverlay(context.getResources().getDrawable(R.drawable.symbol_crosshair));
+		    	idealPointOverlay.addOverlay(new OverlayItem(new GeoPoint(calcLat, calcLng), "Title", "Snippet"));
+		    	MyItemizedOverlay realPointOverlay = new MyItemizedOverlay(context.getResources().getDrawable(R.drawable.jogging2));
+		    	realPointOverlay.addOverlay(new OverlayItem(Control.getLastGpsFix(), "Title", "Snippet"));
 		    	if (oldIdeal != null) {
 		    		map.getOverlays().remove(oldIdeal);
 		    	}
-		    	if (oldActual != null) {
-		    		map.getOverlays().remove(oldActual);
+		    	if (oldReal != null) {
+		    		map.getOverlays().remove(oldReal);
 		    	}
-		    	map.getOverlays().add(IdealPointOverlay);
-		    	oldIdeal = IdealPointOverlay;
-		    	map.getOverlays().add(ActualPointOverlay);
-		    	oldActual = ActualPointOverlay;
+		    	map.getOverlays().add(idealPointOverlay);
+		    	oldIdeal = idealPointOverlay;
+		    	map.getOverlays().add(realPointOverlay);
+		    	oldReal = realPointOverlay;
 		    	try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {

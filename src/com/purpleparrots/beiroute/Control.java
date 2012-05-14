@@ -351,4 +351,17 @@ public class Control {
 	public static void setLastGpsFix(GeoPoint lastGpsFix) {
 		Control.lastGpsFix = lastGpsFix;
 	}
+
+	public static double getIdealProgress() {
+		if (followingState == NOT_FOLLOWING) {
+			return 0;
+		} else {
+			Log.d("diag", "" + ((System.currentTimeMillis() - followingStartTime) / followingDuration));
+			return (System.currentTimeMillis() - followingStartTime) / followingDuration;
+		}
+	}
+
+	public static double getRealProgress() {
+		return 0;
+	}
 }
