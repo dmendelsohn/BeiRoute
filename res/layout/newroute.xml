@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
             android:onClick="onClick"
             android:text="&lt;Record Button>" />
 
@@ -34,6 +35,7 @@
             android:layout_alignBottom="@+id/record_button"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/record_button"
+            android:textColor="@android:color/white"
             android:text="Resume"
             android:visibility="invisible" />
 
