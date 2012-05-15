@@ -53,10 +53,14 @@ public class Control {
 	private static int newRouteState = NOT_YET_RECORDED;
 	private static int followingState = NOT_FOLLOWING;
 	
-	private static boolean isFirstTime = false;
+	private static boolean isFirstTimeFlag = false;
+	
+	public static boolean isFirstTime() {
+		return isFirstTimeFlag;
+	}
 	
 	public static void markFirstTime() {
-		isFirstTime = true;
+		isFirstTimeFlag = true;
 	}
 	
 	public static int getNewRouteState() {

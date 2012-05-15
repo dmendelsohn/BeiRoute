@@ -34,7 +34,8 @@ public class TimeAlarm extends BroadcastReceiver {
 		Control.setFollowingState(Control.FOLLOWING);
 		Control.setupFollowingRoute(System.currentTimeMillis(), Control.getWorkingRoute().duration);
 		Location start = Control.getWorkingRoute().getLocFixes().getFirst();
-		Control.setLastGpsFix(new GeoPoint((int) (start.getLatitude() * 1000000), (int) (start.getLongitude() * 1000000)));
+		//Control.setLastGpsFix(new GeoPoint((int) (start.getLatitude() * 1000000), (int) (start.getLongitude() * 1000000)));
+		Control.setLastGpsFix(new GeoPoint(42358477, -71092208));
 		nm.notify(i, test);
 		i++;
 	}
