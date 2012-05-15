@@ -12,13 +12,31 @@
         android:text="@string/new_route_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        android:id="@+id/record_button"
-        style="?android:attr/buttonStyleSmall"
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="Button" />
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/record_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:onClick="onClick"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/pause_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/record_button"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/record_button"
+            android:text="Pause Recording" />
+
+    </RelativeLayout>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -97,13 +115,12 @@
         android:layout_height="match_parent" >
 
         <Button
-            android:id="@+id/home_button"
+            android:id="@+id/discard_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/home" />
-
+            android:text="Discard Route" />
     </RelativeLayout>
 
 </LinearLayout>

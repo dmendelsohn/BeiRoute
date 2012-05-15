@@ -19,14 +19,15 @@ public class NewRouteActivity extends Activity {
 	Bundle savedBundle;
 	//int route_ID;
 	int state;
+	static boolean isPaused;
 	String name,start,end;
-	boolean saved;
+	boolean saved, discarded;
 	EditText nameField, startField, endField;
 	TextView timerDisplay;
-	Button recordButton,homeButton;
+	Button recordButton,discardButton, pauseButton;
 	long currentTimeDisplayed;
 	Timer timer;
-    private Handler handler;
+    private static Handler handler;
     
     public static final String PREFS_NAME = "MyPrefsFile";
     
@@ -37,20 +38,41 @@ public class NewRouteActivity extends Activity {
         setContentView(R.layout.newroute);
         savedBundle = savedInstanceState;
         saved = false;
+        discarded = false;
     	timer = new Timer();
     	nameField = (EditText)findViewById(R.id.name_field);
     	startField = (EditText)findViewById(R.id.start_field);
     	endField = (EditText)findViewById(R.id.end_field);
     	recordButton = (Button)findViewById(R.id.record_button);
-    	homeButton = (Button)findViewById(R.id.home_button);
+    	discardButton = (Button)findViewById(R.id.discard_button);
+    	pauseButton = (Button)findViewById(R.id.pause_button);
     	timerDisplay = (TextView)findViewById(R.id.newRouteTimerDisplay);
     	
-    	homeButton.setOnClickListener(new View.OnClickListener() {
+    	discardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+            	discarded = true;
+            	//Control.discardRoute();
             	Intent i = new Intent(NewRouteActivity.this, MainActivity.class);
             	startActivity(i);
             }
         });
+    	
+    	/*pauseButton.setText("Pause Recording");
+    	pauseButton.setOnClickListener(new View.OnClickListener() {
+    		public void onClick(View v) {
+    			if (!isPaused) {
+    				Control.pauseRecording();
+    				isPaused = true;
+    	            handler.removeCallbacks(updateTimeTask);
+    			}
+    			else {
+    				Control.resumeRecording();
+    				isPaused = false;
+    	    		handler.removeCallbacks(updateTimeTask);
+    	        	handler.postDelayed(updateTimeTask, 1000);
+    			}
+    		}
+    	});*/
     	
     	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         name = settings.getString("route_name", "");
@@ -69,7 +91,7 @@ public class NewRouteActivity extends Activity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         
-        if (saved == false) {
+        if (saved == false && discarded == false) {
         	editor.putString("route_name", nameField.getText().toString());
         	editor.putString("route_start", startField.getText().toString());
         	editor.putString("route_end", endField.getText().toString());
@@ -92,6 +114,11 @@ public class NewRouteActivity extends Activity {
     	updateTime();
     	handler = new Handler();
     	state = Control.getNewRouteState();
+    	/*if (state == Control.PAUSED) {
+    		isPaused = true;
+    	}
+    	else
+    		isPaused = false;*/
     	Log.d("Dan's Log", "Entered NewRoute onResume with state " + state);
     	switch(state){
     	case Control.NOT_YET_RECORDED:
@@ -106,6 +133,10 @@ public class NewRouteActivity extends Activity {
     	case Control.RECORDED:
         	recordButton.setText("Save Route");
         	break;
+    	/*case Control.PAUSED:
+    		recordButton.setText("Stop Recording");
+    		
+    		break;*/
     	}
     	
     	nameField.setText(name);
@@ -156,14 +187,14 @@ public class NewRouteActivity extends Activity {
     public void onClick(View route) {
     	if (state == Control.NOT_YET_RECORDED) {
         	recordButton.setText("Stop Recording");
-    		state++;
+    		state = Control.RECORDING;
     		Control.startRecording(this);
     		handler.removeCallbacks(updateTimeTask);
         	handler.postDelayed(updateTimeTask, 1000);
 
     	} else if (state == Control.RECORDING) {
         	recordButton.setText("Save Route");
-    		state++;
+    		state = Control.RECORDED;
     		Control.stopRecording();
             handler.removeCallbacks(updateTimeTask);
             handler = null;
