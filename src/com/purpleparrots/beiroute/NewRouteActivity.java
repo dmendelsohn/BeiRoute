@@ -157,7 +157,7 @@ public class NewRouteActivity extends Activity {
             buttonContainer.addView(recordButton, lay);
             
             RelativeLayout.LayoutParams lay2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lay.addRule(RelativeLayout.CENTER_IN_PARENT);
+            lay2.addRule(RelativeLayout.CENTER_HORIZONTAL);
             buttonContainer.addView(resumeButton, lay2);
         	break;
     	/*case Control.PAUSED:
@@ -230,12 +230,13 @@ public class NewRouteActivity extends Activity {
         	
         	buttonContainer.removeView(recordButton);
         	buttonContainer.removeView(resumeButton);
+        	
         	RelativeLayout.LayoutParams lay = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             lay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             buttonContainer.addView(recordButton, lay);
             
             RelativeLayout.LayoutParams lay2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lay.addRule(RelativeLayout.CENTER_IN_PARENT);
+            lay2.addRule(RelativeLayout.CENTER_HORIZONTAL);
             buttonContainer.addView(resumeButton, lay2);
             
     		state = Control.RECORDED;
