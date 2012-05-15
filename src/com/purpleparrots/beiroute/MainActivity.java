@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +37,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	public static final int REAL_PROGRESS = 0;
 	public static final int IDEAL_PROGRESS = 1;
+	public static final int INSTRUCTION_DIALOG_ID = 0;
 	int counter1 = 0;
 	int counter2 = 0;
 	
@@ -45,6 +47,7 @@ public class MainActivity extends Activity implements OnClickListener {
     	Log.d("Dan's Log", "Created Main Activity");
     	Control.initialize();
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.main);
         whole_screen = (LinearLayout)findViewById(R.id.home_parent);
         dynamicLayout = (LinearLayout)findViewById(R.id.dynamic_layout);
@@ -77,6 +80,16 @@ public class MainActivity extends Activity implements OnClickListener {
                 	startActivity(i);
             }
         });
+        if (Control.isFirstTime()) {
+        	//showDialog(INSTRUCTION_DIALOG_ID);
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	builder.setTitle("Welcome to TripTracker!");
+        	builder.setMessage("Press \"New Route\" and record while you travel," +
+        			" or press an existing route to schedule an alert.");
+        	builder.setPositiveButton("OK", null);
+        	AlertDialog dialog = builder.show();
+        }
+        Control.markFirstTime();
             	
     }
     
@@ -125,6 +138,16 @@ public class MainActivity extends Activity implements OnClickListener {
     	handler = null;	
     }
     
+    /*@Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog = new Dialog(MainActivity.this);
+ 	   switch (id) {
+ 	   case INSTRUCTION_DIALOG_ID:
+ 		   Log.d("Dan's Log", "Instruction Dialog called");
+           return dialog;
+ 	   }
+ 	   return null;
+    }*/
     
     public void fillRoutes() {
     	LinearLayout routeLayout = (LinearLayout)findViewById(R.id.home_parent);
@@ -425,4 +448,5 @@ public class MainActivity extends Activity implements OnClickListener {
 		return 0;
 
     }
+    
 }
