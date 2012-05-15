@@ -148,6 +148,17 @@ public class NewRouteActivity extends Activity {
         	recordButton.setText(" ");
         	recordButton.setBackgroundResource(R.drawable.save_small3);
         	resumeButton.setVisibility(View.VISIBLE);
+        	resumeButton.setBackgroundResource(R.drawable.record);
+        	
+        	buttonContainer.removeView(recordButton);
+        	buttonContainer.removeView(resumeButton);
+        	RelativeLayout.LayoutParams lay = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            buttonContainer.addView(recordButton, lay);
+            
+            RelativeLayout.LayoutParams lay2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lay.addRule(RelativeLayout.CENTER_IN_PARENT);
+            buttonContainer.addView(resumeButton, lay2);
         	break;
     	/*case Control.PAUSED:
     		recordButton.setText("Stop Recording");
@@ -218,9 +229,14 @@ public class NewRouteActivity extends Activity {
         	resumeButton.setBackgroundResource(R.drawable.record);
         	
         	buttonContainer.removeView(recordButton);
+        	buttonContainer.removeView(resumeButton);
         	RelativeLayout.LayoutParams lay = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             lay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             buttonContainer.addView(recordButton, lay);
+            
+            RelativeLayout.LayoutParams lay2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lay.addRule(RelativeLayout.CENTER_IN_PARENT);
+            buttonContainer.addView(resumeButton, lay2);
             
     		state = Control.RECORDED;
     		Control.stopRecording();
