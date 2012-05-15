@@ -13,7 +13,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <RelativeLayout
-        android:id="@+id/RelativeLayout1"
+        android:id="@+id/button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -22,19 +22,20 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:onClick="onClick"
-            android:text="Button" />
+            android:text="&lt;Record Button>" />
 
         <Button
-            android:id="@+id/pause_button"
-            android:layout_width="match_parent"
+            android:id="@+id/resume_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/record_button"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/record_button"
-            android:text="Pause Recording" />
+            android:layout_toLeftOf="@+id/record_button"
+            android:text="Resume"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

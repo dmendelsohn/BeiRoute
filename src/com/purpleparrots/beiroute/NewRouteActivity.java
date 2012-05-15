@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class NewRouteActivity extends Activity {
@@ -24,7 +25,8 @@ public class NewRouteActivity extends Activity {
 	boolean saved, discarded;
 	EditText nameField, startField, endField;
 	TextView timerDisplay;
-	Button recordButton,discardButton, pauseButton;
+	Button recordButton,discardButton,pauseButton,resumeButton;
+	RelativeLayout buttonContainer;
 	long currentTimeDisplayed;
 	Timer timer;
     private static Handler handler;
@@ -45,8 +47,10 @@ public class NewRouteActivity extends Activity {
     	endField = (EditText)findViewById(R.id.end_field);
     	recordButton = (Button)findViewById(R.id.record_button);
     	discardButton = (Button)findViewById(R.id.discard_button);
-    	pauseButton = (Button)findViewById(R.id.pause_button);
+    	resumeButton = (Button)findViewById(R.id.resume_button);
+    	//pauseButton = (Button)findViewById(R.id.pause_button);
     	timerDisplay = (TextView)findViewById(R.id.newRouteTimerDisplay);
+    	buttonContainer = (RelativeLayout)findViewById(R.id.button_container);
     	
     	discardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -54,6 +58,12 @@ public class NewRouteActivity extends Activity {
             	//Control.discardRoute();
             	Intent i = new Intent(NewRouteActivity.this, MainActivity.class);
             	startActivity(i);
+            }
+        });
+    	
+    	resumeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	Log.d("Dan's Log", "Pressed resume button");
             }
         });
     	
@@ -120,18 +130,24 @@ public class NewRouteActivity extends Activity {
     	else
     		isPaused = false;*/
     	Log.d("Dan's Log", "Entered NewRoute onResume with state " + state);
+    	//pauseButton.setBackgroundResource(R.drawable.letter_a);
     	switch(state){
     	case Control.NOT_YET_RECORDED:
-        	recordButton.setText("Begin Recording");
+    		Log.d("Dan's Log", "Entered NOT YET RECORDED case of onResume in NewRoute");
+        	recordButton.setText("Record");
+        	recordButton.setBackgroundResource(R.drawable.record);
         	break;
     	case Control.RECORDING:
     		Log.d("Dan's Log", "got into recording case in NewRouteActivity onResume()");
-        	recordButton.setText("Stop Recording");
+        	recordButton.setText("Stop/Pause");
+        	recordButton.setBackgroundResource(R.drawable.stop_red);
         	handler.removeCallbacks(updateTimeTask);
         	handler.postDelayed(updateTimeTask, 1000);
         	break;
     	case Control.RECORDED:
-        	recordButton.setText("Save Route");
+        	recordButton.setText(" ");
+        	recordButton.setBackgroundResource(R.drawable.save_small3);
+        	resumeButton.setVisibility(View.VISIBLE);
         	break;
     	/*case Control.PAUSED:
     		recordButton.setText("Stop Recording");
@@ -186,19 +202,32 @@ public class NewRouteActivity extends Activity {
     
     public void onClick(View route) {
     	if (state == Control.NOT_YET_RECORDED) {
-        	recordButton.setText("Stop Recording");
+    		Log.d("Dan's Log","Entered NOT_YET_RECORDED case");
+        	recordButton.setText("Stop/Pause");
+        	recordButton.setBackgroundResource(R.drawable.stop_red);
     		state = Control.RECORDING;
     		Control.startRecording(this);
     		handler.removeCallbacks(updateTimeTask);
         	handler.postDelayed(updateTimeTask, 1000);
 
     	} else if (state == Control.RECORDING) {
-        	recordButton.setText("Save Route");
+    		Log.d("Dan's Log","Entered RECORDING case");
+        	recordButton.setText(" ");
+        	recordButton.setBackgroundResource(R.drawable.save_small3);
+        	resumeButton.setVisibility(View.VISIBLE);
+        	resumeButton.setBackgroundResource(R.drawable.record);
+        	
+        	buttonContainer.removeView(recordButton);
+        	RelativeLayout.LayoutParams lay = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lay.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            buttonContainer.addView(recordButton, lay);
+            
     		state = Control.RECORDED;
     		Control.stopRecording();
             handler.removeCallbacks(updateTimeTask);
             handler = null;
     	} else if (state == Control.RECORDED) {
+    		Log.d("Dan's Log","Entered RECORDED case");
     		String name = nameField.getText().toString();
     		String startloc = startField.getText().toString();
     		String endloc = endField.getText().toString();
