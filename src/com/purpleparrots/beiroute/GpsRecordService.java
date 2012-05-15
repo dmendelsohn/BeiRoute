@@ -13,8 +13,7 @@ import android.util.Log;
 public class GpsRecordService extends Service implements LocationListener {
 	
 	LocationManager lm;
-	//final long interval = 15000;
-	final long interval = 0;
+	final long interval = 10000;
 	private Route workingRoute;
 	
 	public void onCreate() {

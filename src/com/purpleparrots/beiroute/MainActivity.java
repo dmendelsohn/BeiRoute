@@ -92,9 +92,9 @@ public class MainActivity extends Activity implements OnClickListener {
     		makeRealProgressBar();
     		makeIdealProgressText();
     		makeIdealProgressBar();
-    		Log.d("diag mainActivity", "about to start progress bar thread");
-    		runProgressBars();
-    		Log.d("diag mainActivity", "should have started thread by now");
+    		//Log.d("diag mainActivity", "about to start progress bar thread");
+    		//runProgressBars();
+    		//Log.d("diag mainActivity", "should have started thread by now");
     	}
     	else {
     		makeTopButton();
@@ -278,8 +278,8 @@ public class MainActivity extends Activity implements OnClickListener {
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
     	TextView tv = new TextView(this);
-    	//tv.setText("Actual progress on " + Control.getRouteName());
-    	tv.setText("Actual progress on HardcodedTestRoute");
+    	tv.setText("How far you are on " + Control.getRouteName() + ":");
+    	//tv.setText("Actual progress on HardcodedTestRoute");
     	tv.setTextSize(20);
     	layout.addView(tv, p);
     }
@@ -290,8 +290,8 @@ public class MainActivity extends Activity implements OnClickListener {
 				  LinearLayout.LayoutParams.MATCH_PARENT,
 				  LinearLayout.LayoutParams.WRAP_CONTENT );
     	TextView tv = new TextView(this);
-    	//tv.setText("Ideal progress on " + Control.getRouteName());
-    	tv.setText("Ideal progress on HardcodedTestRoute");
+    	tv.setText("How far you should be on " + Control.getRouteName() + ":");
+    	//tv.setText("Ideal progress on HardcodedTestRoute");
     	tv.setTextSize(20);
     	layout.addView(tv, p);
     }
@@ -315,11 +315,12 @@ public class MainActivity extends Activity implements OnClickListener {
     	layout.addView(pb, p);
     	mIdealProgress = pb;
     	
-    	/*
+    	
     	// Start lengthy operation in a background thread
         new Thread(new Runnable() {
             public void run() {
                 while (mIdealProgressStatus < 100) {
+                	/*
                 	if (counter2 == 1000) {
                 		mIdealProgressStatus += 1; //obviously change this to do something real
                 		counter2 = 0;
@@ -333,36 +334,61 @@ public class MainActivity extends Activity implements OnClickListener {
                             mIdealProgress.setProgress(mIdealProgressStatus);
                         }
                     });
+                    */
+                	mIdealProgressStatus = (int) (100*Control.getIdealProgress());
+                	Log.d("blah", "" + Control.getIdealProgress());
+                	Log.d("blah", "" + mIdealProgressStatus);
+                	idealProgressHandler.post(new Runnable() {
+                        public void run() {
+                            mIdealProgress.setProgress(mIdealProgressStatus);
+                        }
+                    });
                 }
+                Control.setFollowingState(Control.NOT_FOLLOWING);
             }
         }).start();
-        */
+        
     }
     
     private void runProgressBars() {
+    	//Log.d("blah", "A");
     	new Thread(new Runnable() {
     		public void run() {
-    			while (true) {
+    			//Log.d("blah", "B");
+    			
+    			//while (true) {
     				Log.d("diag mainActivity", "loooop");
     				mIdealProgressStatus = (int) (100 * Control.getIdealProgress());
     				mRealProgressStatus = (int) (100 * Control.getRealProgress());
-    				mIdealProgress.setProgress(mIdealProgressStatus);
-    				mRealProgress.setProgress(mRealProgressStatus);
+    				mIdealProgress.post(new Runnable() {
+                        public void run() {
+                            mIdealProgress.setProgress(mIdealProgressStatus);
+                            mIdealProgress.invalidate();
+                        }
+                    });
+    				mRealProgress.post(new Runnable() {
+                        public void run() {
+                            mRealProgress.setProgress(mRealProgressStatus);
+                            mRealProgress.invalidate();
+                        }
+                    });
     				try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-    			}
+    			//}
+    		
     		}
-    	});
+    	}).start();
     }
     
     private Runnable updateTimeTask = new Runnable() {
     	public void run() {
         currentTimeDisplayed += 1000;
     	updateTime();
+    	//runProgressBars();
     	handler.postDelayed(this, 1000);
     	}
     };
