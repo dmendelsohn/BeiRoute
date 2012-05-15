@@ -57,7 +57,9 @@ public class RouteDetailActivity extends MapActivity {
         
         drawStaticMapOverlays();
         if (Control.getFollowingState() == Control.FOLLOWING) {
+        	Log.d("diag", "starting gpsfollowservice");
         	startService(new Intent(this, GpsFollowService.class));
+        	Log.d("diag", "started gpsfollowservice");
         	Log.d("diag", "drawing dynamic");
         	//new Thread(new MapDynamicStuff()).start();
         	new MapDynamicStuff().run();

@@ -18,9 +18,9 @@ public class GpsFollowService extends Service implements LocationListener {
 	//final long interval = 15000;
 	final long interval = 0;
 	public void onCreate() {
-		Log.d("diag gpsfollow", "Creating TrackerService...");
+		Log.d("diag_gpsfollow", "Creating TrackerService...");
 		lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Log.d("diag gpsfollow", "Got location service");
+		Log.d("diag_gpsfollow", "Got location service");
 		
 		//String provider = lm.getBestProvider(new Criteria(), true);
     }
@@ -39,18 +39,18 @@ public class GpsFollowService extends Service implements LocationListener {
 
 	public void onLocationChanged(Location location) {
 		if (Control.getNewRouteState() == Control.RECORDING) {
-			Log.d("diag gpsfollow", location.toString());
+			Log.d("diag_gpsfollow", location.toString());
 			Control.setLastGpsFix(new GeoPoint((int) (location.getLatitude() * 1000000), (int) (location.getLongitude() * 1000000)));
 		}
 	}
 
 	public void onProviderDisabled(String provider) {
-		Log.d("diag gpsfollow", "Disabled: " + provider);
+		Log.d("diag_gpsfollow", "Disabled: " + provider);
         requestLocationUpdates();
 	}
 
 	public void onProviderEnabled(String provider) {
-		Log.d("diag", "Enabled: " + provider);
+		Log.d("diag_gpsfollow", "Enabled: " + provider);
 		requestLocationUpdates();
 	}
 

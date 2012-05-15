@@ -53,6 +53,12 @@ public class Control {
 	private static int newRouteState = NOT_YET_RECORDED;
 	private static int followingState = NOT_FOLLOWING;
 	
+	private static boolean isFirstTime = false;
+	
+	public static void markFirstTime() {
+		isFirstTime = true;
+	}
+	
 	public static int getNewRouteState() {
 		return newRouteState;
 	}
@@ -104,7 +110,7 @@ public class Control {
 	
 	private static void populateForDemo(Hashtable<Integer, Route> routeList, Hashtable<Integer, Alarm> alarmList) {
 		workingRoute.startTime = 1000000000000l;
-		workingRoute.duration = 30000;
+		workingRoute.duration = 300000;
 		Location l = new Location("test");
 		l.setLatitude(42.355);
 		l.setLongitude(-71.09);
@@ -130,9 +136,12 @@ public class Control {
 		l.setLongitude(-71.094);
 		l.setTime(1000000030000l);
 		workingRoute.addLocFix(l);
+		workingRoute.duration = 30000;
 		saveRoute("Monday morning", "Maseeh", "32-124");
+		workOnNewRoute();
 		workingRoute.duration = 300000;
 		saveRoute("W/F morning", "Maseeh", "26-100");
+		workOnNewRoute();
 		workingRoute.duration = 300000;
 		saveRoute("House to Campus", "House", "77 Mass Ave");
 	}
@@ -189,6 +198,10 @@ public class Control {
 		//setWorkingRoute(maxRouteId);
 		newRouteState = NOT_YET_RECORDED;
 		Log.d("diag", "newRouteState = NOT_YET_RECORDED");
+	}
+	
+	public static void discardRoute() {
+		newRoute = new Route();
 	}
 	
 	public static void deleteRoute() {
@@ -356,10 +369,15 @@ public class Control {
 		if (followingState == NOT_FOLLOWING) {
 			return 0;
 		} else {
-			Log.d("diag", "" + ((System.currentTimeMillis() - followingStartTime) / followingDuration));
-			return (System.currentTimeMillis() - followingStartTime) / followingDuration;
+			Log.d("diag", "" + ((System.currentTimeMillis() - followingStartTime) * 1.0 / followingDuration));
+			return (System.currentTimeMillis() - followingStartTime) * 1.0 / followingDuration;
 		}
 	}
+	
+	public static void stopFollowing() {
+		
+	}
+	
 
 	public static double getRealProgress() {
 		return 0;
