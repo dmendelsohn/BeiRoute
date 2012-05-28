@@ -20,7 +20,7 @@ public class TimeAlarm extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Log.d("diag", "Received notification!");
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification test = new Notification(android.R.drawable.alert_light_frame, "This is a ticker!", System.currentTimeMillis());
+		Notification test = new Notification(android.R.drawable.alert_light_frame, "Time to go!", System.currentTimeMillis());
 		test.defaults |= Notification.DEFAULT_LIGHTS;
 		test.defaults |= Notification.DEFAULT_SOUND;
 		test.defaults |= Notification.DEFAULT_VIBRATE;
@@ -29,13 +29,13 @@ public class TimeAlarm extends BroadcastReceiver {
 		notificationIntent.putExtra("workingAlarmId", intent.getIntExtra("workingAlarmId", 0));
 		int blah = intent.getIntExtra("blah", 0);
 		PendingIntent pi = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-		test.setLatestEventInfo(context, "Title", "Notification text", pi);
+		test.setLatestEventInfo(context, "TripTracker", "You should probably think about getting going right about now", pi);
 		Control.setWorkingRoute(intent.getIntExtra("workingRouteId", blah));
 		Control.setFollowingState(Control.FOLLOWING);
 		Control.setupFollowingRoute(System.currentTimeMillis(), Control.getWorkingRoute().duration);
 		Location start = Control.getWorkingRoute().getLocFixes().getFirst();
-		//Control.setLastGpsFix(new GeoPoint((int) (start.getLatitude() * 1000000), (int) (start.getLongitude() * 1000000)));
-		Control.setLastGpsFix(new GeoPoint(42358477, -71092208));
+		Control.setLastGpsFix(new GeoPoint((int) (start.getLatitude() * 1000000), (int) (start.getLongitude() * 1000000)));
+		//Control.setLastGpsFix(new GeoPoint(42358477, -71092208));
 		nm.notify(i, test);
 		i++;
 	}

@@ -55,7 +55,7 @@ public class GpsRecordService extends Service implements LocationListener {
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		requestLocationUpdates();
 	}
 	
 	private void requestLocationUpdates() {
