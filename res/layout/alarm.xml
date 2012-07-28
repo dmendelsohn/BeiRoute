@@ -26,7 +26,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/route"
+                android:text="@string/alarmdetails_route"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/hour"
+                android:text="Hour"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/minute"
+                android:text="Minute"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -89,7 +89,7 @@
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/month"
+                android:text="Month"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -110,7 +110,7 @@
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/day"
+                android:text="Day"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -131,7 +131,7 @@
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/year"
+                android:text="Year"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -150,7 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onDelete"
-        android:text="@string/delete_alarm" />
+        android:text="@string/alarmdetails_delete_alarm" />
 
     <Button
         android:id="@+id/button2"

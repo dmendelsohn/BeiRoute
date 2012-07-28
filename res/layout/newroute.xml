@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/new_route_title"
+        android:text="@string/recording_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <RelativeLayout
@@ -54,7 +54,7 @@
                 android:id="@+id/route_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/route_name"
+                android:text="@string/recording_route_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -76,7 +76,7 @@
                 android:id="@+id/start_location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/start_location"
+                android:text="@string/recording_start_location"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -95,7 +95,7 @@
                 android:id="@+id/end_location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/end_location"
+                android:text="@string/recording_end_location"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -108,7 +108,6 @@
 
     <TextView
         android:id="@+id/newRouteTimerDisplay"
-        style="@style/styleName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Not Started" />

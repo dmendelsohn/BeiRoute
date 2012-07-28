@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="styleName" parent="android:Widget.TextView">
-        <item name="android:gravity">center</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    
+    <style name="Theme" parent="android:style/Theme">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
+    
+    <style name="Theme.Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/grayLight</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+	    
 </resources>

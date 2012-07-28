@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/default_route_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
@@ -22,16 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:text="@string/start_location"
+            android:text="@string/routedetails_start_location"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/route_detail_start"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:text="@string/default_start_location"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_weight="0.5" />
 
     </LinearLayout>
 
@@ -45,16 +42,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:text="@string/end_location"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="@string/routedetails_end_location" />
 
         <TextView
             android:id="@+id/route_detail_end"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:text="@string/default_end_location"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_weight="0.5" />
 
     </LinearLayout>
 
@@ -68,16 +62,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:text="@string/route_duration"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="@string/routedetails_route_duration" />
 
         <TextView
             android:id="@+id/route_detail_duration"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:text="@string/default_route_duration"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_weight="0.5" />
 
     </LinearLayout>
 
@@ -107,7 +98,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:onClick="onSet"
-            android:text="@string/set_alarm" />
+            android:text="@string/routedetails_set_alarm" />
 
         <Button
             android:id="@+id/button2"
@@ -115,7 +106,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:onClick="onDelete"
-            android:text="@string/delete_this_route" />
+            android:text="@string/routedetails_delete" />
 
         <Button
             android:id="@+id/button3"

@@ -8,9 +8,7 @@
         android:id="@+id/set_alarm_top_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/default_route_name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:gravity="center" />
 
     <TimePicker
         android:id="@+id/timePicker"
@@ -41,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/repeat_check_box"
-            android:text="@string/advance_notice"
+            android:text="@string/setalarm_advance_notice"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -82,7 +80,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/alarm_name"
+                android:text="@string/setalarm_alarm_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -101,6 +99,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="@string/save_set_alarm" />
+        android:text="@string/setalarm_set" />
 
 </LinearLayout>

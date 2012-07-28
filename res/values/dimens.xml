@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- FONT SIZES -->
+    <dimen name="fontSmall">10sp</dimen>
+    <dimen name="fontMidSmall">12sp</dimen>
+    <dimen name="fontMedium">14sp</dimen>
+    <dimen name="fontMidLarge">16sp</dimen>
+    <dimen name="fontLarge">18sp</dimen>
+    
+    <!-- Google recommended row height -->
+    <dimen name="standard_row_height">48sp</dimen>
+</resources>
